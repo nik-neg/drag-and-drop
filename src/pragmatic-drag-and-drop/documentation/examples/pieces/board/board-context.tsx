@@ -5,20 +5,21 @@ import invariant from 'tiny-invariant';
 import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
 
 import type { ColumnType } from '../../data/people';
+import { TriggerEnum } from 'enums/trigger.enum';
 
 export type BoardContextValue = {
 	getColumns: () => any[];
 
-	reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: 'pointer' | 'keyboard' }) => void;
+	reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
-	reorderCard: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: 'pointer' | 'keyboard' }) => void;
+	reorderCard: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
 	moveCard: (args: {
 		startColumnId: string;
 		finishColumnId: string;
 		itemIndexInStartColumn: number;
 		itemIndexInFinishColumn?: number;
-		trigger?: 'pointer' | 'keyboard'
+		trigger?: TriggerEnum;
 	}) => void;
 
 	registerCard: (args: { cardId: string; element: HTMLElement; actionMenuTrigger: HTMLElement }) => void;

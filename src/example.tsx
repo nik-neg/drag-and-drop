@@ -16,31 +16,32 @@ import Board from './pragmatic-drag-and-drop/documentation/examples/pieces/board
 import { BoardContext, type BoardContextValue } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
 import { Column } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/column';
 import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
+import { OutcomeEnum } from './enums/outcome.enum';
+import { DataTypeEnum } from 'enums/data-type.enum';
+import { TriggerEnum } from 'enums/trigger.enum';
 
 type Outcome =
 	| {
-		type: 'column-reorder';
+		type: OutcomeEnum.COLUMN_REORDER;
 		columnId: string;
 		startIndex: number;
 		finishIndex: number;
 	}
 	| {
-		type: 'card-reorder';
+		type: OutcomeEnum.CARD_REORDER;
 		columnId: string;
 		startIndex: number;
 		finishIndex: number;
 	}
 	| {
-		type: 'card-move';
+		type: OutcomeEnum.CARD_MOVE;
 		finishColumnId: string;
 		itemIndexInStartColumn: number;
 		itemIndexInFinishColumn: number;
 	};
 
-type Trigger = 'pointer' | 'keyboard';
-
 type Operation = {
-	trigger: Trigger;
+	trigger: TriggerEnum;
 	outcome: Outcome;
 };
 
@@ -50,7 +51,7 @@ type BoardState = {
 	lastOperation: Operation | null;
 };
 
-export default function BoardExample() {
+export const BoardExample = () => {
 	const [data, setData] = useState<BoardState>(() => {
 		const base = getBasicData();
 		return {
@@ -74,7 +75,7 @@ export default function BoardExample() {
 		}
 		const { outcome, trigger } = lastOperation;
 
-		if (outcome.type === 'column-reorder') {
+		if (outcome.type === OutcomeEnum.COLUMN_REORDER) {
 			const { startIndex, finishIndex } = outcome;
 
 			const { columnMap, orderedColumnIds } = stableData.current;
@@ -91,7 +92,7 @@ export default function BoardExample() {
 			return;
 		}
 
-		if (outcome.type === 'card-reorder') {
+		if (outcome.type === OutcomeEnum.CARD_REORDER) {
 			const { columnId, startIndex, finishIndex } = outcome;
 
 			const { columnMap } = stableData.current;
@@ -113,7 +114,7 @@ export default function BoardExample() {
 			return;
 		}
 
-		if (outcome.type === 'card-move') {
+		if (outcome.type === OutcomeEnum.CARD_MOVE) {
 			const { finishColumnId, itemIndexInStartColumn, itemIndexInFinishColumn } = outcome;
 
 			const data = stableData.current;
@@ -196,12 +197,12 @@ export default function BoardExample() {
 			columnId,
 			startIndex,
 			finishIndex,
-			trigger = 'keyboard',
+			trigger = TriggerEnum.KEYBOARD,
 		}: {
 			columnId: string;
 			startIndex: number;
 			finishIndex: number;
-			trigger?: Trigger;
+			trigger?: TriggerEnum;
 		}) => {
 			setData((data) => {
 				const sourceColumn = data.columnMap[columnId];
@@ -222,7 +223,7 @@ export default function BoardExample() {
 				};
 
 				const outcome: Outcome | null = {
-					type: 'card-reorder',
+					type: OutcomeEnum.CARD_REORDER,
 					columnId,
 					startIndex,
 					finishIndex,
@@ -247,13 +248,13 @@ export default function BoardExample() {
 			finishColumnId,
 			itemIndexInStartColumn,
 			itemIndexInFinishColumn,
-			trigger = 'keyboard',
+			trigger = TriggerEnum.KEYBOARD,
 		}: {
 			startColumnId: string;
 			finishColumnId: string;
 			itemIndexInStartColumn: number;
 			itemIndexInFinishColumn?: number;
-			trigger?: 'pointer' | 'keyboard';
+			trigger?: TriggerEnum;
 		}) => {
 			// invalid cross column movement
 			if (startColumnId === finishColumnId) {
@@ -282,7 +283,7 @@ export default function BoardExample() {
 				};
 
 				const outcome: Outcome | null = {
-					type: 'card-move',
+					type: OutcomeEnum.CARD_MOVE,
 					finishColumnId,
 					itemIndexInStartColumn,
 					itemIndexInFinishColumn: newIndexInDestination,
@@ -320,7 +321,7 @@ export default function BoardExample() {
 					// 1. remove element from original position
 					// 2. move to new position
 
-					if (source.data.type === 'column') {
+					if (source.data.type === DataTypeEnum.COLUMN) {
 						const startIndex: number = data.orderedColumnIds.findIndex(
 							(columnId) => columnId === source.data.columnId,
 						);
@@ -341,7 +342,7 @@ export default function BoardExample() {
 						reorderColumn({ startIndex, finishIndex, trigger: 'pointer' });
 					}
 					// Dragging a card
-					if (source.data.type === 'card') {
+					if (source.data.type === DataTypeEnum.CARD) {
 						const itemId = source.data.itemId;
 						invariant(typeof itemId === 'string');
 						// TODO: these lines not needed if item has columnId on it
@@ -370,7 +371,7 @@ export default function BoardExample() {
 									columnId: sourceColumn.columnId,
 									startIndex: itemIndex,
 									finishIndex: destinationIndex,
-									trigger: 'pointer',
+									trigger: TriggerEnum.POINTER,
 								});
 								return;
 							}
@@ -380,7 +381,7 @@ export default function BoardExample() {
 								itemIndexInStartColumn: itemIndex,
 								startColumnId: sourceColumn.columnId,
 								finishColumnId: destinationColumn.columnId,
-								trigger: 'pointer',
+								trigger: TriggerEnum.POINTER,
 							});
 							return;
 						}
@@ -411,7 +412,7 @@ export default function BoardExample() {
 									columnId: sourceColumn.columnId,
 									startIndex: itemIndex,
 									finishIndex: destinationIndex,
-									trigger: 'pointer',
+									trigger: TriggerEnum.POINTER,
 								});
 								return;
 							}
@@ -426,7 +427,7 @@ export default function BoardExample() {
 								startColumnId: sourceColumn.columnId,
 								finishColumnId: destinationColumn.columnId,
 								itemIndexInFinishColumn: destinationIndex,
-								trigger: 'pointer',
+								trigger: TriggerEnum.POINTER,
 							});
 						}
 					}

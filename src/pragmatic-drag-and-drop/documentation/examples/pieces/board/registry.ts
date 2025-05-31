@@ -24,7 +24,7 @@ type Registry = {
  * Registering cards and their action menu trigger element,
  * so that we can restore focus to the trigger when a card moves between columns.
  */
-export function createRegistry(): Registry {
+export const createRegistry = (): Registry => {
 	const cards = new Map<string, CardEntry>();
 	const columns = new Map<string, ColumnEntry>();
 
