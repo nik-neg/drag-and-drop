@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import invariant from 'tiny-invariant';
 
@@ -10,15 +10,16 @@ import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
-import { type ColumnMap, type ColumnType, getBasicData, type Person } from './pragmatic-drag-and-drop/documentation/examples/data/people';
+import { type ColumnMap, getBasicData, } from './pragmatic-drag-and-drop/documentation/examples/data/people';
 import { Board } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board';
 import { BoardContext, type BoardContextValue } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
 import { Column } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/column';
 import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
 import { OutcomeEnum } from './enums/outcome.enum';
-import { DataTypeEnum } from 'enums/data-type.enum';
-import { TriggerEnum } from 'enums/trigger.enum';
-import { getColumns, moveCard, reorderCard, reorderColumn } from 'callbacks';
+import { DataTypeEnum } from './enums/data-type.enum';
+import { TriggerEnum } from './enums/trigger.enum';
+import { useCallbacks } from './hooks/useCallbacks';
+// import { getColumns, moveCard, reorderCard, reorderColumn } from './useCallbacks';
 
 export type Outcome =
 	| {
@@ -54,6 +55,9 @@ export type BoardState = {
 const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
 export const BoardExample = () => {
+
+	const { getColumns, reorderColumn, reorderCard, moveCard } = useCallbacks();
+
 	const [data, setData] = useState<BoardState>(initialData);
 
 	const handleSetData = useCallback((data: BoardState) => {

@@ -1,17 +1,16 @@
-import { reorder } from "@atlaskit/pragmatic-drag-and-drop/dist/types/public-utils/reorder";
+import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import { OutcomeEnum } from "enums/outcome.enum";
 import { TriggerEnum } from "enums/trigger.enum";
 import { BoardState, Outcome } from "example";
 import { ColumnMap, Person } from "pragmatic-drag-and-drop/documentation/examples/data/people";
 import { ColumnType } from "pragmatic-drag-and-drop/documentation/examples/data/people";
-import { useBoardContext } from "pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context";
-import { RefObject, SetStateAction, useCallback } from "react";
+import { RefObject, useCallback } from 'react';
 
+interface IGetColumnsProps {
+    boardState: RefObject<BoardState>;
+}
 
-
-export const getColumns = useCallback(() => {
-    const { boardState } = useBoardContext();
-
+export const getColumns = useCallback(({ boardState }: IGetColumnsProps) => {
     const { columnMap, orderedColumnIds } = boardState.current;
 
     return orderedColumnIds.map((columnId) => columnMap[columnId]);
@@ -22,6 +21,8 @@ interface IReorderColumnProps {
     startIndex: number;
     finishIndex: number;
     trigger?: TriggerEnum;
+    boardState: RefObject<BoardState>;
+    handleSetData: (data: BoardState) => void;
 }
 
 export const reorderColumn = useCallback(
@@ -29,9 +30,9 @@ export const reorderColumn = useCallback(
         startIndex,
         finishIndex,
         trigger = TriggerEnum.KEYBOARD,
+        boardState,
+        handleSetData,
     }: IReorderColumnProps) => {
-        const { boardState, handleSetData } = useBoardContext();
-
         const { orderedColumnIds, ...otherState } = boardState.current;
 
         const newBoardState: BoardState = {
@@ -57,21 +58,26 @@ export const reorderColumn = useCallback(
     [],
 );
 
+interface IReorderCardProps {
+    columnId: string;
+    startIndex: number;
+    finishIndex: number;
+    trigger?: TriggerEnum;
+    boardState: RefObject<BoardState>;
+    handleSetData: (data: BoardState) => void;
+}
+
 export const reorderCard = useCallback(
     ({
         columnId,
         startIndex,
         finishIndex,
         trigger = TriggerEnum.KEYBOARD,
-    }: {
-        columnId: string;
-        startIndex: number;
-        finishIndex: number;
-        trigger?: TriggerEnum;
-    }) => {
-        const { boardState, handleSetData } = useBoardContext();
+        boardState,
+        handleSetData,
+    }: IReorderCardProps) => {
 
-        const { orderedColumnIds, columnMap, ...otherState } = boardState.current;
+        const { columnMap, ...otherState } = boardState.current;
 
         const sourceColumn = columnMap[columnId];
         const updatedItems = reorder({
@@ -91,7 +97,7 @@ export const reorderCard = useCallback(
         };
 
 
-        return {
+        const newBoardState: BoardState = {
             ...otherState,
             columnMap: updatedMap,
             lastOperation: {
@@ -104,8 +110,20 @@ export const reorderCard = useCallback(
                 },
             },
         };
+
+        handleSetData(newBoardState);
     }, []
 );
+
+interface IMoveCardProps {
+    startColumnId: string;
+    finishColumnId: string;
+    itemIndexInStartColumn: number;
+    itemIndexInFinishColumn?: number;
+    trigger?: TriggerEnum;
+    boardState: RefObject<BoardState>;
+    handleSetData: (data: BoardState) => void;
+}
 
 export const moveCard = useCallback(
     ({
@@ -114,16 +132,10 @@ export const moveCard = useCallback(
         itemIndexInStartColumn,
         itemIndexInFinishColumn,
         trigger = TriggerEnum.KEYBOARD,
-    }: {
-        startColumnId: string;
-        finishColumnId: string;
-        itemIndexInStartColumn: number;
-        itemIndexInFinishColumn?: number;
-        trigger?: TriggerEnum;
-    }) => {
-        const { boardState, handleSetData } = useBoardContext();
-
-        const { orderedColumnIds, columnMap, ...otherState } = boardState.current;
+        boardState,
+        handleSetData,
+    }: IMoveCardProps) => {
+        const { columnMap, ...otherState } = boardState.current;
 
         // invalid cross column movement
         if (startColumnId === finishColumnId) {
@@ -157,7 +169,7 @@ export const moveCard = useCallback(
             itemIndexInFinishColumn: newIndexInDestination,
         };
 
-        return {
+        const newBoardState: BoardState = {
             ...otherState,
             columnMap: updatedMap,
             lastOperation: {
@@ -165,4 +177,6 @@ export const moveCard = useCallback(
                 trigger: trigger,
             },
         };
+
+        handleSetData(newBoardState);
     }, []);
