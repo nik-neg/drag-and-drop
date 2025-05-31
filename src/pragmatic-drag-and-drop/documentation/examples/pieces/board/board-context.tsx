@@ -10,6 +10,7 @@ import { BoardState } from 'example';
 
 export type BoardContextValue = {
 	boardState: RefObject<BoardState>;
+	handleSetData: (data: BoardState) => void;
 
 	getColumns: () => ColumnType[];
 

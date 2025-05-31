@@ -19,7 +19,7 @@ import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples
 import { OutcomeEnum } from './enums/outcome.enum';
 import { DataTypeEnum } from 'enums/data-type.enum';
 import { TriggerEnum } from 'enums/trigger.enum';
-import { getColumns } from 'callbacks';
+import { getColumns, reorderColumn } from 'callbacks';
 
 export type Outcome =
 	| {
@@ -56,6 +56,10 @@ const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
 export const BoardExample = () => {
 	const [data, setData] = useState<BoardState>(initialData);
+
+	const handleSetData = useCallback((data: BoardState) => {
+		setData(data);
+	}, []);
 
 	const boardStateRef = useRef<BoardState>(data);
 
@@ -165,40 +169,40 @@ export const BoardExample = () => {
 	// 	return orderedColumnIds.map((columnId) => columnMap[columnId]);
 	// }, []);
 
-	const reorderColumn = useCallback(
-		({
-			startIndex,
-			finishIndex,
-			trigger = TriggerEnum.KEYBOARD,
-		}: {
-			startIndex: number;
-			finishIndex: number;
-			trigger?: TriggerEnum;
-		}) => {
-			setData((data) => {
-				const outcome: Outcome = {
-					type: OutcomeEnum.COLUMN_REORDER,
-					columnId: data.orderedColumnIds[startIndex],
-					startIndex,
-					finishIndex,
-				};
+	// const reorderColumn = useCallback(
+	// 	({
+	// 		startIndex,
+	// 		finishIndex,
+	// 		trigger = TriggerEnum.KEYBOARD,
+	// 	}: {
+	// 		startIndex: number;
+	// 		finishIndex: number;
+	// 		trigger?: TriggerEnum;
+	// 	}) => {
+	// 		setData((data) => {
+	// 			const outcome: Outcome = {
+	// 				type: OutcomeEnum.COLUMN_REORDER,
+	// 				columnId: data.orderedColumnIds[startIndex],
+	// 				startIndex,
+	// 				finishIndex,
+	// 			};
 
-				return {
-					...data,
-					orderedColumnIds: reorder({
-						list: data.orderedColumnIds,
-						startIndex,
-						finishIndex,
-					}),
-					lastOperation: {
-						outcome,
-						trigger: trigger,
-					},
-				};
-			});
-		},
-		[],
-	);
+	// 			return {
+	// 				...data,
+	// 				orderedColumnIds: reorder({
+	// 					list: data.orderedColumnIds,
+	// 					startIndex,
+	// 					finishIndex,
+	// 				}),
+	// 				lastOperation: {
+	// 					outcome,
+	// 					trigger: trigger,
+	// 				},
+	// 			};
+	// 		});
+	// 	},
+	// 	[],
+	// );
 
 	const reorderCard = useCallback(
 		({
@@ -447,6 +451,7 @@ export const BoardExample = () => {
 	const contextValue: BoardContextValue = useMemo(() => {
 		return {
 			boardState: boardStateRef,
+			handleSetData,
 			getColumns,
 			reorderColumn,
 			reorderCard,

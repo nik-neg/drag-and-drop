@@ -22,37 +22,37 @@ interface IReorderColumnProps {
     startIndex: number;
     finishIndex: number;
     trigger?: TriggerEnum;
-    onSetData: SetStateAction<BoardState>;
 }
 
-const reorderColumn = useCallback(
+export const reorderColumn = useCallback(
     ({
         startIndex,
         finishIndex,
         trigger = TriggerEnum.KEYBOARD,
-        onSetData
     }: IReorderColumnProps) => {
-        onSetData((prevData: BoardState) => {
-            const outcome: Outcome = {
-                type: OutcomeEnum.COLUMN_REORDER,
-                columnId: prevData.orderedColumnIds[startIndex],
+        const { boardState, handleSetData } = useBoardContext();
+
+        const { orderedColumnIds, ...otherState } = boardState.current;
+
+        const newBoardState: BoardState = {
+            ...otherState,
+            orderedColumnIds: reorder({
+                list: orderedColumnIds,
                 startIndex,
                 finishIndex,
-            };
-
-            return {
-                ...prevData,
-                orderedColumnIds: reorder({
-                    list: prevData.orderedColumnIds,
+            }),
+            lastOperation: {
+                outcome: {
+                    type: OutcomeEnum.COLUMN_REORDER,
+                    columnId: orderedColumnIds[startIndex],
                     startIndex,
                     finishIndex,
-                }),
-                lastOperation: {
-                    outcome,
-                    trigger,
                 },
-            };
-        });
+                trigger,
+            },
+        }
+
+        handleSetData(newBoardState);
     },
     [],
 );
