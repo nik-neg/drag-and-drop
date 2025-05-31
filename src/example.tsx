@@ -161,15 +161,15 @@ export const BoardExample = () => {
 		({
 			startIndex,
 			finishIndex,
-			trigger = 'keyboard',
+			trigger = TriggerEnum.KEYBOARD,
 		}: {
 			startIndex: number;
 			finishIndex: number;
-			trigger?: Trigger;
+			trigger?: TriggerEnum;
 		}) => {
 			setData((data) => {
 				const outcome: Outcome = {
-					type: 'column-reorder',
+					type: OutcomeEnum.COLUMN_REORDER,
 					columnId: data.orderedColumnIds[startIndex],
 					startIndex,
 					finishIndex,
@@ -339,7 +339,7 @@ export const BoardExample = () => {
 							axis: 'horizontal',
 						});
 
-						reorderColumn({ startIndex, finishIndex, trigger: 'pointer' });
+						reorderColumn({ startIndex, finishIndex, trigger: TriggerEnum.POINTER });
 					}
 					// Dragging a card
 					if (source.data.type === DataTypeEnum.CARD) {
