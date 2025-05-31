@@ -57,7 +57,7 @@ export const reorderColumn = useCallback(
     [],
 );
 
-const reorderCard = useCallback(
+export const reorderCard = useCallback(
     ({
         columnId,
         startIndex,
@@ -69,45 +69,45 @@ const reorderCard = useCallback(
         finishIndex: number;
         trigger?: TriggerEnum;
     }) => {
-        setData((data) => {
-            const sourceColumn = data.columnMap[columnId];
-            const updatedItems = reorder({
-                list: sourceColumn.items,
-                startIndex,
-                finishIndex,
-            });
+        const { boardState, handleSetData } = useBoardContext();
 
-            const updatedSourceColumn: ColumnType = {
-                ...sourceColumn,
-                items: updatedItems,
-            };
+        const { orderedColumnIds, columnMap, ...otherState } = boardState.current;
 
-            const updatedMap: ColumnMap = {
-                ...data.columnMap,
-                [columnId]: updatedSourceColumn,
-            };
-
-            const outcome: Outcome | null = {
-                type: OutcomeEnum.CARD_REORDER,
-                columnId,
-                startIndex,
-                finishIndex,
-            };
-
-            return {
-                ...data,
-                columnMap: updatedMap,
-                lastOperation: {
-                    trigger: trigger,
-                    outcome,
-                },
-            };
+        const sourceColumn = columnMap[columnId];
+        const updatedItems = reorder({
+            list: sourceColumn.items,
+            startIndex,
+            finishIndex,
         });
-    },
-    [],
+
+        const updatedSourceColumn: ColumnType = {
+            ...sourceColumn,
+            items: updatedItems,
+        };
+
+        const updatedMap: ColumnMap = {
+            ...columnMap,
+            [columnId]: updatedSourceColumn,
+        };
+
+
+        return {
+            ...otherState,
+            columnMap: updatedMap,
+            lastOperation: {
+                trigger: trigger,
+                outcome: {
+                    type: OutcomeEnum.CARD_REORDER,
+                    columnId,
+                    startIndex,
+                    finishIndex,
+                },
+            },
+        };
+    }, []
 );
 
-const moveCard = useCallback(
+export const moveCard = useCallback(
     ({
         startColumnId,
         finishColumnId,
@@ -121,48 +121,48 @@ const moveCard = useCallback(
         itemIndexInFinishColumn?: number;
         trigger?: TriggerEnum;
     }) => {
+        const { boardState, handleSetData } = useBoardContext();
+
+        const { orderedColumnIds, columnMap, ...otherState } = boardState.current;
+
         // invalid cross column movement
         if (startColumnId === finishColumnId) {
             return;
         }
-        setData((data) => {
-            const sourceColumn = data.columnMap[startColumnId];
-            const destinationColumn = data.columnMap[finishColumnId];
-            const item: Person = sourceColumn.items[itemIndexInStartColumn];
+        const sourceColumn = columnMap[startColumnId];
+        const destinationColumn = columnMap[finishColumnId];
+        const item: Person = sourceColumn.items[itemIndexInStartColumn];
 
-            const destinationItems = Array.from(destinationColumn.items);
-            // Going into the first position if no index is provided
-            const newIndexInDestination = itemIndexInFinishColumn ?? 0;
-            destinationItems.splice(newIndexInDestination, 0, item);
+        const destinationItems = Array.from(destinationColumn.items);
+        // Going into the first position if no index is provided
+        const newIndexInDestination = itemIndexInFinishColumn ?? 0;
+        destinationItems.splice(newIndexInDestination, 0, item);
 
-            const updatedMap = {
-                ...data.columnMap,
-                [startColumnId]: {
-                    ...sourceColumn,
-                    items: sourceColumn.items.filter((i) => i.userId !== item.userId),
-                },
-                [finishColumnId]: {
-                    ...destinationColumn,
-                    items: destinationItems,
-                },
-            };
+        const updatedMap = {
+            ...columnMap,
+            [startColumnId]: {
+                ...sourceColumn,
+                items: sourceColumn.items.filter((i) => i.userId !== item.userId),
+            },
+            [finishColumnId]: {
+                ...destinationColumn,
+                items: destinationItems,
+            },
+        };
 
-            const outcome: Outcome | null = {
-                type: OutcomeEnum.CARD_MOVE,
-                finishColumnId,
-                itemIndexInStartColumn,
-                itemIndexInFinishColumn: newIndexInDestination,
-            };
+        const outcome: Outcome | null = {
+            type: OutcomeEnum.CARD_MOVE,
+            finishColumnId,
+            itemIndexInStartColumn,
+            itemIndexInFinishColumn: newIndexInDestination,
+        };
 
-            return {
-                ...data,
-                columnMap: updatedMap,
-                lastOperation: {
-                    outcome,
-                    trigger: trigger,
-                },
-            };
-        });
-    },
-    [],
-);
+        return {
+            ...otherState,
+            columnMap: updatedMap,
+            lastOperation: {
+                outcome,
+                trigger: trigger,
+            },
+        };
+    }, []);

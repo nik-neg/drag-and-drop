@@ -19,7 +19,7 @@ import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples
 import { OutcomeEnum } from './enums/outcome.enum';
 import { DataTypeEnum } from 'enums/data-type.enum';
 import { TriggerEnum } from 'enums/trigger.enum';
-import { getColumns, reorderColumn } from 'callbacks';
+import { getColumns, moveCard, reorderCard, reorderColumn } from 'callbacks';
 
 export type Outcome =
 	| {
@@ -204,115 +204,115 @@ export const BoardExample = () => {
 	// 	[],
 	// );
 
-	const reorderCard = useCallback(
-		({
-			columnId,
-			startIndex,
-			finishIndex,
-			trigger = TriggerEnum.KEYBOARD,
-		}: {
-			columnId: string;
-			startIndex: number;
-			finishIndex: number;
-			trigger?: TriggerEnum;
-		}) => {
-			setData((data) => {
-				const sourceColumn = data.columnMap[columnId];
-				const updatedItems = reorder({
-					list: sourceColumn.items,
-					startIndex,
-					finishIndex,
-				});
+	// const reorderCard = useCallback(
+	// 	({
+	// 		columnId,
+	// 		startIndex,
+	// 		finishIndex,
+	// 		trigger = TriggerEnum.KEYBOARD,
+	// 	}: {
+	// 		columnId: string;
+	// 		startIndex: number;
+	// 		finishIndex: number;
+	// 		trigger?: TriggerEnum;
+	// 	}) => {
+	// 		setData((data) => {
+	// 			const sourceColumn = data.columnMap[columnId];
+	// 			const updatedItems = reorder({
+	// 				list: sourceColumn.items,
+	// 				startIndex,
+	// 				finishIndex,
+	// 			});
 
-				const updatedSourceColumn: ColumnType = {
-					...sourceColumn,
-					items: updatedItems,
-				};
+	// 			const updatedSourceColumn: ColumnType = {
+	// 				...sourceColumn,
+	// 				items: updatedItems,
+	// 			};
 
-				const updatedMap: ColumnMap = {
-					...data.columnMap,
-					[columnId]: updatedSourceColumn,
-				};
+	// 			const updatedMap: ColumnMap = {
+	// 				...data.columnMap,
+	// 				[columnId]: updatedSourceColumn,
+	// 			};
 
-				const outcome: Outcome | null = {
-					type: OutcomeEnum.CARD_REORDER,
-					columnId,
-					startIndex,
-					finishIndex,
-				};
+	// 			const outcome: Outcome | null = {
+	// 				type: OutcomeEnum.CARD_REORDER,
+	// 				columnId,
+	// 				startIndex,
+	// 				finishIndex,
+	// 			};
 
-				return {
-					...data,
-					columnMap: updatedMap,
-					lastOperation: {
-						trigger: trigger,
-						outcome,
-					},
-				};
-			});
-		},
-		[],
-	);
+	// 			return {
+	// 				...data,
+	// 				columnMap: updatedMap,
+	// 				lastOperation: {
+	// 					trigger: trigger,
+	// 					outcome,
+	// 				},
+	// 			};
+	// 		});
+	// 	},
+	// 	[],
+	// );
 
-	const moveCard = useCallback(
-		({
-			startColumnId,
-			finishColumnId,
-			itemIndexInStartColumn,
-			itemIndexInFinishColumn,
-			trigger = TriggerEnum.KEYBOARD,
-		}: {
-			startColumnId: string;
-			finishColumnId: string;
-			itemIndexInStartColumn: number;
-			itemIndexInFinishColumn?: number;
-			trigger?: TriggerEnum;
-		}) => {
-			// invalid cross column movement
-			if (startColumnId === finishColumnId) {
-				return;
-			}
-			setData((data) => {
-				const sourceColumn = data.columnMap[startColumnId];
-				const destinationColumn = data.columnMap[finishColumnId];
-				const item: Person = sourceColumn.items[itemIndexInStartColumn];
+	// const moveCard = useCallback(
+	// 	({
+	// 		startColumnId,
+	// 		finishColumnId,
+	// 		itemIndexInStartColumn,
+	// 		itemIndexInFinishColumn,
+	// 		trigger = TriggerEnum.KEYBOARD,
+	// 	}: {
+	// 		startColumnId: string;
+	// 		finishColumnId: string;
+	// 		itemIndexInStartColumn: number;
+	// 		itemIndexInFinishColumn?: number;
+	// 		trigger?: TriggerEnum;
+	// 	}) => {
+	// 		// invalid cross column movement
+	// 		if (startColumnId === finishColumnId) {
+	// 			return;
+	// 		}
+	// 		setData((data) => {
+	// 			const sourceColumn = data.columnMap[startColumnId];
+	// 			const destinationColumn = data.columnMap[finishColumnId];
+	// 			const item: Person = sourceColumn.items[itemIndexInStartColumn];
 
-				const destinationItems = Array.from(destinationColumn.items);
-				// Going into the first position if no index is provided
-				const newIndexInDestination = itemIndexInFinishColumn ?? 0;
-				destinationItems.splice(newIndexInDestination, 0, item);
+	// 			const destinationItems = Array.from(destinationColumn.items);
+	// 			// Going into the first position if no index is provided
+	// 			const newIndexInDestination = itemIndexInFinishColumn ?? 0;
+	// 			destinationItems.splice(newIndexInDestination, 0, item);
 
-				const updatedMap = {
-					...data.columnMap,
-					[startColumnId]: {
-						...sourceColumn,
-						items: sourceColumn.items.filter((i) => i.userId !== item.userId),
-					},
-					[finishColumnId]: {
-						...destinationColumn,
-						items: destinationItems,
-					},
-				};
+	// 			const updatedMap = {
+	// 				...data.columnMap,
+	// 				[startColumnId]: {
+	// 					...sourceColumn,
+	// 					items: sourceColumn.items.filter((i) => i.userId !== item.userId),
+	// 				},
+	// 				[finishColumnId]: {
+	// 					...destinationColumn,
+	// 					items: destinationItems,
+	// 				},
+	// 			};
 
-				const outcome: Outcome | null = {
-					type: OutcomeEnum.CARD_MOVE,
-					finishColumnId,
-					itemIndexInStartColumn,
-					itemIndexInFinishColumn: newIndexInDestination,
-				};
+	// 			const outcome: Outcome | null = {
+	// 				type: OutcomeEnum.CARD_MOVE,
+	// 				finishColumnId,
+	// 				itemIndexInStartColumn,
+	// 				itemIndexInFinishColumn: newIndexInDestination,
+	// 			};
 
-				return {
-					...data,
-					columnMap: updatedMap,
-					lastOperation: {
-						outcome,
-						trigger: trigger,
-					},
-				};
-			});
-		},
-		[],
-	);
+	// 			return {
+	// 				...data,
+	// 				columnMap: updatedMap,
+	// 				lastOperation: {
+	// 					outcome,
+	// 					trigger: trigger,
+	// 				},
+	// 			};
+	// 		});
+	// 	},
+	// 	[],
+	// );
 
 	const [instanceId] = useState(() => Symbol('instance-id'));
 
