@@ -15,7 +15,7 @@ export type ColumnMap = {
     [key: string]: ColumnType;
 };
 
-export function getBasicData(): { columnMap: ColumnMap; orderedColumnIds: string[] } {
+export const getBasicData = (): { columnMap: ColumnMap; orderedColumnIds: string[] } => {
     const columnMap: ColumnMap = {
         'column-1': {
             columnId: 'column-1',

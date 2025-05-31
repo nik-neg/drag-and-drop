@@ -100,12 +100,12 @@ let sharedLookupIndex: number = 0;
 /**
  * Note: this does not use randomness so that it is stable for VR tests
  */
-export function getPerson(): Person {
+export const getPerson = (): Person => {
 	sharedLookupIndex++;
 	return getPersonFromPosition({ position: sharedLookupIndex });
 }
 
-export function getPersonFromPosition({ position }: { position: number }): Person {
+export const getPersonFromPosition = ({ position }: { position: number }): Person => {
 	// use the next name
 	const name = names[position % names.length];
 	// use the next role
@@ -118,17 +118,17 @@ export function getPersonFromPosition({ position }: { position: number }): Perso
 	};
 }
 
-export function getPeopleFromPosition({
+export const getPeopleFromPosition = ({
 	amount,
 	startIndex,
 }: {
 	amount: number;
 	startIndex: number;
-}): Person[] {
+}): Person[] => {
 	return Array.from({ length: amount }, () => getPersonFromPosition({ position: startIndex++ }));
 }
 
-export function getPeople({ amount }: { amount: number }): Person[] {
+export const getPeople = ({ amount }: { amount: number }): Person[] => {
 	return Array.from({ length: amount }, () => getPerson());
 }
 
@@ -139,13 +139,13 @@ export type ColumnType = {
 };
 export type ColumnMap = { [columnId: string]: ColumnType };
 
-export function getData({
+export const getData = ({
 	columnCount,
 	itemsPerColumn,
 }: {
 	columnCount: number;
 	itemsPerColumn: number;
-}) {
+}) => {
 	const columnMap: ColumnMap = {};
 
 	for (let i = 0; i < columnCount; i++) {
@@ -165,7 +165,7 @@ export function getData({
 	};
 }
 
-export function getBasicData() {
+export const getBasicData = (): { columnMap: ColumnMap; orderedColumnIds: string[] } => {
 	const columnMap: ColumnMap = {
 		confluence: {
 			title: 'Confluence',
