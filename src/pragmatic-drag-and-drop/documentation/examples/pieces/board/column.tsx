@@ -133,7 +133,7 @@ const isDraggingStyles = xcss({
 	opacity: 0.4,
 });
 
-export const Column = memo(function Column({ column }: { column: ColumnType }) {
+export const Column = memo(({ column }: { column: ColumnType }) => {
 	const columnId = column.columnId;
 	const columnRef = useRef<HTMLDivElement | null>(null);
 	const columnInnerRef = useRef<HTMLDivElement | null>(null);
@@ -318,7 +318,7 @@ const safariPreviewStyles = xcss({
 	padding: 'space.200',
 });
 
-function SafariColumnPreview({ column }: { column: ColumnType }) {
+export const SafariColumnPreview = memo(({ column }: { column: ColumnType }) => {
 	return (
 		<Box xcss={[columnHeaderStyles, safariPreviewStyles]}>
 			<Heading size="xxsmall" as="span">
@@ -326,17 +326,17 @@ function SafariColumnPreview({ column }: { column: ColumnType }) {
 			</Heading>
 		</Box>
 	);
-}
+})
 
-function ActionMenu() {
+export const ActionMenu = memo(() => {
 	return (
 		<DropdownMenu trigger={DropdownMenuTrigger}>
 			<ActionMenuItems />
 		</DropdownMenu>
 	);
-}
+})
 
-function ActionMenuItems() {
+export const ActionMenuItems = memo(() => {
 	const { columnId } = useColumnContext();
 	const { getColumns, reorderColumn } = useBoardContext();
 
@@ -370,7 +370,7 @@ function ActionMenuItems() {
 			</DropdownItem>
 		</DropdownItemGroup>
 	);
-}
+})
 
 function DropdownMenuTrigger({ triggerRef, ...triggerProps }: CustomTriggerProps) {
 	return (

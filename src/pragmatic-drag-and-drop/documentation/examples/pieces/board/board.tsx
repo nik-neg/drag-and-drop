@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, ReactNode } from 'react';
 import styled from 'styled-components';
 
 const BoardContainer = styled.div`
@@ -9,6 +9,6 @@ const BoardContainer = styled.div`
 	background: #f4f5f7;
 `;
 
-export default function Board({ children }: { children: React.ReactNode }) {
+export const Board = memo(({ children }: { children: ReactNode }) => {
 	return <BoardContainer>{children}</BoardContainer>;
-}
+})

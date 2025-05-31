@@ -87,13 +87,13 @@ type CardPrimitiveProps = {
 	actionMenuTriggerRef?: Ref<HTMLButtonElement>;
 };
 
-function MoveToOtherColumnItem({
+export const MoveToOtherColumnItem = memo(({
 	targetColumn,
 	startIndex,
 }: {
 	targetColumn: ColumnType;
 	startIndex: number;
-}) {
+}) => {
 	const { moveCard } = useBoardContext();
 	const { columnId } = useColumnContext();
 
@@ -106,9 +106,9 @@ function MoveToOtherColumnItem({
 	}, [columnId, moveCard, startIndex, targetColumn.columnId]);
 
 	return <DropdownItem onClick={onClick}>{targetColumn.title}</DropdownItem>;
-}
+})
 
-function LazyDropdownItems({ userId }: { userId: string }) {
+export const LazyDropdownItems = memo(({ userId }: { userId: string }) => {
 	const { getColumns, reorderCard } = useBoardContext();
 	const { columnId, getCardIndex, getNumCards } = useColumnContext();
 
@@ -165,12 +165,12 @@ function LazyDropdownItems({ userId }: { userId: string }) {
 			) : null}
 		</Fragment>
 	);
-}
+});
 
-const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function CardPrimitive(
+export const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>((
 	{ closestEdge, item, state, actionMenuTriggerRef },
 	ref,
-) {
+) => {
 	const { avatarUrl, name, role, userId } = item;
 
 	return (
@@ -221,7 +221,7 @@ const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function Ca
 	);
 });
 
-export const Card = memo(function Card({ item }: { item: Person }) {
+export const Card = memo(({ item }: { item: Person }) => {
 	const ref = useRef<HTMLDivElement | null>(null);
 	const { userId } = item;
 	const [closestEdge, setClosestEdge] = useState<Edge | null>(null);

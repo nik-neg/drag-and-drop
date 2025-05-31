@@ -12,7 +12,7 @@ import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/ad
 import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 
 import { type ColumnMap, type ColumnType, getBasicData, type Person } from './pragmatic-drag-and-drop/documentation/examples/data/people';
-import Board from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board';
+import { Board } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board';
 import { BoardContext, type BoardContextValue } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
 import { Column } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/column';
 import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
