@@ -39,6 +39,7 @@ import { type ColumnType } from '../../data/people';
 
 import { useBoardContext } from './board-context';
 import { ColumnContext, type ColumnContextProps, useColumnContext } from './column-context';
+import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 
 const ColumnContainer = styled.div`
 	background: white;
@@ -187,10 +188,8 @@ export const Column = memo(function Column({ column }: { column: ColumnType }) {
 		return combine(
 			registerColumn({
 				columnId,
-				entry: {
-					element: columnRef.current,
-				},
-			}),
+				element: columnRef.current,
+			}) as any,
 			draggable({
 				element: columnRef.current,
 				dragHandle: headerRef.current,

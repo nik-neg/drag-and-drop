@@ -171,59 +171,59 @@ function LazyDropdownItems({ userId }: { userId: string }) {
 	);
 }
 
-const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function CardPrimitive(
-	{ closestEdge, item, state, actionMenuTriggerRef },
-	ref,
-) {
-	const { avatarUrl, name, role, userId } = item;
+// const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function CardPrimitive(
+// 	{ closestEdge, item, state, actionMenuTriggerRef },
+// 	ref,
+// ) {
+// 	const { avatarUrl, name, role, userId } = item;
 
-	return (
-		<Grid
-			ref={ref}
-			testId={`item-${userId}`}
-			templateColumns="auto 1fr auto"
-			columnGap="space.100"
-			alignItems="center"
-			xcss={[baseStyles, stateStyles[state.type]]}
-		>
-			<Box as="span" xcss={noPointerEventsStyles}>
-				<Avatar size="large" src={avatarUrl} />
-			</Box>
+// 	return (
+// 		<Grid
+// 			ref={ref}
+// 			testId={`item-${userId}`}
+// 			templateColumns="auto 1fr auto"
+// 			columnGap="space.100"
+// 			alignItems="center"
+// 			xcss={[baseStyles, stateStyles[state.type]]}
+// 		>
+// 			<Box as="span" xcss={noPointerEventsStyles}>
+// 				<Avatar size="large" src={avatarUrl} />
+// 			</Box>
 
-			<Stack space="space.050" grow="fill">
-				<Heading size="xsmall" as="span">
-					{name}
-				</Heading>
-				<Box as="small" xcss={noMarginStyles}>
-					{role}
-				</Box>
-			</Stack>
-			<Box xcss={buttonColumnStyles}>
-				<DropdownMenu
-					trigger={({ triggerRef, ...triggerProps }) => (
-						<IconButton
-							ref={
-								actionMenuTriggerRef
-									? mergeRefs([triggerRef, actionMenuTriggerRef])
-									: // Workaround for IconButton typing issue
-									mergeRefs([triggerRef])
-							}
-							icon={MoreIcon}
-							label={`Move ${name}`}
-							appearance="default"
-							spacing="compact"
-							{...triggerProps}
-						/>
-					)}
-				>
-					<LazyDropdownItems userId={userId} />
-				</DropdownMenu>
-			</Box>
+// 			<Stack space="space.050" grow="fill">
+// 				<Heading size="xsmall" as="span">
+// 					{name}
+// 				</Heading>
+// 				<Box as="small" xcss={noMarginStyles}>
+// 					{role}
+// 				</Box>
+// 			</Stack>
+// 			<Box xcss={buttonColumnStyles}>
+// 				<DropdownMenu
+// 					trigger={({ triggerRef, ...triggerProps }) => (
+// 						<IconButton
+// 							ref={
+// 								actionMenuTriggerRef
+// 									? mergeRefs([triggerRef, actionMenuTriggerRef])
+// 									: // Workaround for IconButton typing issue
+// 									mergeRefs([triggerRef])
+// 							}
+// 							icon={MoreIcon}
+// 							label={`Move ${name}`}
+// 							appearance="default"
+// 							spacing="compact"
+// 							{...triggerProps}
+// 						/>
+// 					)}
+// 				>
+// 					<LazyDropdownItems userId={userId} />
+// 				</DropdownMenu>
+// 			</Box>
 
-			{closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
-		</Grid>
-	);
-});
+// 			{closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
+// 		</Grid>
+// 	);
+// });
 
 const CardContainer = styled.div`
 	background: white;

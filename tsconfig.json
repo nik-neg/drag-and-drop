@@ -23,6 +23,12 @@
         "paths": {
             "@atlaskit/pragmatic-drag-and-drop/*": [
                 "node_modules/@atlaskit/pragmatic-drag-and-drop/*"
+            ],
+            "@atlaskit/eslint-plugin-design-system": [
+                "node_modules/@atlaskit/eslint-plugin-design-system"
+            ],
+            "@atlaskit/eslint-plugin-ui-styling-standard": [
+                "node_modules/@atlaskit/eslint-plugin-ui-styling-standard"
             ]
         }
     },
