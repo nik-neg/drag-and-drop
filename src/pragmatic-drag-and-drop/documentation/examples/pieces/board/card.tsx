@@ -11,16 +11,12 @@ import React, {
 
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
-import styled from 'styled-components';
 
 import Avatar from '@atlaskit/avatar';
 import { IconButton } from '@atlaskit/button/new';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
-// eslint-disable-next-line @atlaskit/design-system/no-banned-imports
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import Heading from '@atlaskit/heading';
-// This is the smaller MoreIcon soon to be more easily accessible with the
-// ongoing icon project
 import MoreIcon from '@atlaskit/icon/utility/migration/show-more-horizontal--editor-more';
 import {
 	attachClosestEdge,
@@ -171,90 +167,170 @@ function LazyDropdownItems({ userId }: { userId: string }) {
 	);
 }
 
-// const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function CardPrimitive(
-// 	{ closestEdge, item, state, actionMenuTriggerRef },
-// 	ref,
-// ) {
-// 	const { avatarUrl, name, role, userId } = item;
-
-// 	return (
-// 		<Grid
-// 			ref={ref}
-// 			testId={`item-${userId}`}
-// 			templateColumns="auto 1fr auto"
-// 			columnGap="space.100"
-// 			alignItems="center"
-// 			xcss={[baseStyles, stateStyles[state.type]]}
-// 		>
-// 			<Box as="span" xcss={noPointerEventsStyles}>
-// 				<Avatar size="large" src={avatarUrl} />
-// 			</Box>
-
-// 			<Stack space="space.050" grow="fill">
-// 				<Heading size="xsmall" as="span">
-// 					{name}
-// 				</Heading>
-// 				<Box as="small" xcss={noMarginStyles}>
-// 					{role}
-// 				</Box>
-// 			</Stack>
-// 			<Box xcss={buttonColumnStyles}>
-// 				<DropdownMenu
-// 					trigger={({ triggerRef, ...triggerProps }) => (
-// 						<IconButton
-// 							ref={
-// 								actionMenuTriggerRef
-// 									? mergeRefs([triggerRef, actionMenuTriggerRef])
-// 									: // Workaround for IconButton typing issue
-// 									mergeRefs([triggerRef])
-// 							}
-// 							icon={MoreIcon}
-// 							label={`Move ${name}`}
-// 							appearance="default"
-// 							spacing="compact"
-// 							{...triggerProps}
-// 						/>
-// 					)}
-// 				>
-// 					<LazyDropdownItems userId={userId} />
-// 				</DropdownMenu>
-// 			</Box>
-
-// 			{closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
-// 		</Grid>
-// 	);
-// });
-
-const CardContainer = styled.div`
-	background: white;
-	border-radius: 4px;
-	padding: 12px;
-	margin-bottom: 8px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
-	&:hover {
-		background: #f4f5f7;
-	}
-`;
-
-export const Card = memo(function Card({ item }: { item: Person }) {
-	const cardRef = useRef<HTMLDivElement>(null);
-	const { registerCard } = useBoardContext();
-	const { columnId } = useColumnContext();
-
-	useEffect(() => {
-		if (!cardRef.current) return;
-
-		registerCard({
-			cardId: item.userId,
-			element: cardRef.current,
-			actionMenuTrigger: cardRef.current,
-		});
-	}, [item.userId, registerCard]);
+const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(function CardPrimitive(
+	{ closestEdge, item, state, actionMenuTriggerRef },
+	ref,
+) {
+	const { avatarUrl, name, role, userId } = item;
 
 	return (
-		<CardContainer ref={cardRef}>
-			{item.name}
-		</CardContainer>
+		<Grid
+			ref={ref}
+			testId={`item-${userId}`}
+			templateColumns="auto 1fr auto"
+			columnGap="space.100"
+			alignItems="center"
+			xcss={[baseStyles, stateStyles[state.type]]}
+		>
+			<Box as="span" xcss={noPointerEventsStyles}>
+				<Avatar size="large" src={avatarUrl} />
+			</Box>
+
+			<Stack space="space.050" grow="fill">
+				<Heading size="xsmall" as="span">
+					{name}
+				</Heading>
+				<Box as="small" xcss={noMarginStyles}>
+					{role}
+				</Box>
+			</Stack>
+			<Box xcss={buttonColumnStyles}>
+				<DropdownMenu
+					trigger={({ triggerRef, ...triggerProps }) => (
+						<IconButton
+							ref={
+								actionMenuTriggerRef
+									? mergeRefs([triggerRef, actionMenuTriggerRef])
+									: // Workaround for IconButton typing issue
+									mergeRefs([triggerRef])
+							}
+							icon={MoreIcon}
+							label={`Move ${name}`}
+							appearance="default"
+							spacing="compact"
+							{...triggerProps}
+						/>
+					)}
+				>
+					<LazyDropdownItems userId={userId} />
+				</DropdownMenu>
+			</Box>
+
+			{closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
+		</Grid>
+	);
+});
+
+export const Card = memo(function Card({ item }: { item: Person }) {
+	const ref = useRef<HTMLDivElement | null>(null);
+	const { userId } = item;
+	const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
+	const [state, setState] = useState<State>(idleState);
+
+	const actionMenuTriggerRef = useRef<HTMLButtonElement>(null);
+	const { instanceId, registerCard } = useBoardContext();
+	useEffect(() => {
+		invariant(actionMenuTriggerRef.current);
+		invariant(ref.current);
+		return registerCard({
+			cardId: userId,
+			element: ref.current,
+			actionMenuTrigger: actionMenuTriggerRef.current,
+		});
+	}, [registerCard, userId]);
+
+	useEffect(() => {
+		const element = ref.current;
+		invariant(element);
+		return combine(
+			draggable({
+				element: element,
+				getInitialData: () => ({ type: 'card', itemId: userId, instanceId }),
+				onGenerateDragPreview: ({ location, source, nativeSetDragImage }) => {
+					const rect = source.element.getBoundingClientRect();
+
+					setCustomNativeDragPreview({
+						nativeSetDragImage,
+						getOffset: preserveOffsetOnSource({
+							element,
+							input: location.current.input,
+						}),
+						render({ container }) {
+							setState({ type: 'preview', container, rect });
+							return () => setState(draggingState);
+						},
+					});
+				},
+
+				onDragStart: () => setState(draggingState),
+				onDrop: () => setState(idleState),
+			}),
+			dropTargetForExternal({
+				element: element,
+			}),
+			dropTargetForElements({
+				element: element,
+				canDrop: ({ source }) => {
+					return source.data.instanceId === instanceId && source.data.type === 'card';
+				},
+				getIsSticky: () => true,
+				getData: ({ input, element }) => {
+					const data = { type: 'card', itemId: userId };
+
+					return attachClosestEdge(data, {
+						input,
+						element,
+						allowedEdges: ['top', 'bottom'],
+					});
+				},
+				onDragEnter: (args) => {
+					if (args.source.data.itemId !== userId) {
+						setClosestEdge(extractClosestEdge(args.self.data));
+					}
+				},
+				onDrag: (args) => {
+					if (args.source.data.itemId !== userId) {
+						setClosestEdge(extractClosestEdge(args.self.data));
+					}
+				},
+				onDragLeave: () => {
+					setClosestEdge(null);
+				},
+				onDrop: () => {
+					setClosestEdge(null);
+				},
+			}),
+		);
+	}, [instanceId, item, userId]);
+
+	return (
+		<Fragment>
+			<CardPrimitive
+				ref={ref}
+				item={item}
+				state={state}
+				closestEdge={closestEdge}
+				actionMenuTriggerRef={actionMenuTriggerRef}
+			/>
+			{state.type === 'preview' &&
+				ReactDOM.createPortal(
+					<Box
+						style={{
+							/**
+							 * Ensuring the preview has the same dimensions as the original.
+							 *
+							 * Using `border-box` sizing here is not necessary in this
+							 * specific example, but it is safer to include generally.
+							 */
+							boxSizing: 'border-box',
+							width: state.rect.width,
+							height: state.rect.height,
+						}}
+					>
+						<CardPrimitive item={item} state={state} closestEdge={null} />
+					</Box>,
+					state.container,
+				)}
+		</Fragment>
 	);
 });

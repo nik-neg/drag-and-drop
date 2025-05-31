@@ -2,18 +2,15 @@ import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from '
 
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
-
+import { Card } from './card';
 import { IconButton } from '@atlaskit/button/new';
 import DropdownMenu, {
 	type CustomTriggerProps,
 	DropdownItem,
 	DropdownItemGroup,
 } from '@atlaskit/dropdown-menu';
-// eslint-disable-next-line @atlaskit/design-system/no-banned-imports
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import Heading from '@atlaskit/heading';
-// This is the smaller MoreIcon soon to be more easily accessible with the
-// ongoing icon project
 import MoreIcon from '@atlaskit/icon/utility/migration/show-more-horizontal--editor-more';
 import { easeInOut } from '@atlaskit/motion/curves';
 import { durations } from '@atlaskit/motion/durations';
@@ -33,49 +30,16 @@ import { centerUnderPointer } from '@atlaskit/pragmatic-drag-and-drop/element/ce
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import { Box, Flex, Inline, Stack, xcss } from '@atlaskit/primitives';
 import { token } from '@atlaskit/tokens';
-import styled from 'styled-components';
 
 import { type ColumnType } from '../../data/people';
 
 import { useBoardContext } from './board-context';
 import { ColumnContext, type ColumnContextProps, useColumnContext } from './column-context';
-import { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
-
-const ColumnContainer = styled.div`
-	background: white;
-	border-radius: 4px;
-	padding: 16px;
-	min-width: 300px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-`;
-
-const ColumnTitle = styled.h3`
-	margin: 0 0 16px 0;
-	font-size: 16px;
-	font-weight: 500;
-`;
-
-const CardList = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-`;
-
-const SCard = styled.div`
-	background: #f4f5f7;
-	padding: 12px;
-	border-radius: 4px;
-	cursor: pointer;
-	&:hover {
-		background: #e6e8eb;
-	}
-`;
 
 const columnStyles = xcss({
 	width: '250px',
 	backgroundColor: 'elevation.surface.sunken',
 	borderRadius: 'border.radius.300',
-	// eslint-disable-next-line @atlaskit/ui-styling-standard/no-unsafe-values, @atlaskit/ui-styling-standard/no-imported-style-values
 	transition: `background ${durations.medium}ms ${easeInOut}`,
 	position: 'relative',
 	/**
@@ -330,7 +294,7 @@ export const Column = memo(function Column({ column }: { column: ColumnType }) {
 						<Box xcss={scrollContainerStyles} ref={scrollableRef}>
 							<Stack xcss={cardListStyles} space="space.100">
 								{column.items.map((item) => (
-									<SCard item={item} key={item.userId} />
+									<Card item={item} key={item.userId} />
 								))}
 							</Stack>
 						</Box>
