@@ -19,8 +19,9 @@ import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples
 import { OutcomeEnum } from './enums/outcome.enum';
 import { DataTypeEnum } from 'enums/data-type.enum';
 import { TriggerEnum } from 'enums/trigger.enum';
+import { getColumns } from 'callbacks';
 
-type Outcome =
+export type Outcome =
 	| {
 		type: OutcomeEnum.COLUMN_REORDER;
 		columnId: string;
@@ -45,31 +46,34 @@ type Operation = {
 	outcome: Outcome;
 };
 
-type BoardState = {
+export type BoardState = {
 	columnMap: ColumnMap;
 	orderedColumnIds: string[];
 	lastOperation: Operation | null;
 };
 
-export const BoardExample = () => {
-	const [data, setData] = useState<BoardState>(() => {
-		const base = getBasicData();
-		return {
-			...base,
-			lastOperation: null,
-		};
-	});
+const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
-	const stableData = useRef(data);
+export const BoardExample = () => {
+	const [data, setData] = useState<BoardState>(initialData);
+
+	const boardStateRef = useRef<BoardState>(data);
+
 	useEffect(() => {
-		stableData.current = data;
+		boardStateRef.current = data;
 	}, [data]);
 
 	const [registry] = useState(createRegistry);
 
 	const { lastOperation } = data;
 
+
+
 	useEffect(() => {
+		return liveRegion.cleanup();
+	}, []);
+
+	const handleLastOperation = useCallback(() => {
 		if (lastOperation === null) {
 			return;
 		}
@@ -78,10 +82,12 @@ export const BoardExample = () => {
 		if (outcome.type === OutcomeEnum.COLUMN_REORDER) {
 			const { startIndex, finishIndex } = outcome;
 
-			const { columnMap, orderedColumnIds } = stableData.current;
+			const { columnMap, orderedColumnIds } = boardStateRef.current;
+
 			const sourceColumn = columnMap[orderedColumnIds[finishIndex]];
 
 			const entry = registry.getColumn(sourceColumn.columnId);
+
 			triggerPostMoveFlash(entry.element);
 
 			liveRegion.announce(
@@ -95,7 +101,7 @@ export const BoardExample = () => {
 		if (outcome.type === OutcomeEnum.CARD_REORDER) {
 			const { columnId, startIndex, finishIndex } = outcome;
 
-			const { columnMap } = stableData.current;
+			const { columnMap } = boardStateRef.current;
 			const column = columnMap[columnId];
 			const item = column.items[finishIndex];
 
@@ -117,7 +123,7 @@ export const BoardExample = () => {
 		if (outcome.type === OutcomeEnum.CARD_MOVE) {
 			const { finishColumnId, itemIndexInStartColumn, itemIndexInFinishColumn } = outcome;
 
-			const data = stableData.current;
+			const data = boardStateRef.current;
 			const destinationColumn = data.columnMap[finishColumnId];
 			const item = destinationColumn.items[itemIndexInFinishColumn];
 
@@ -146,16 +152,18 @@ export const BoardExample = () => {
 
 			return;
 		}
+
+
 	}, [lastOperation, registry]);
 
 	useEffect(() => {
-		return liveRegion.cleanup();
-	}, []);
+		handleLastOperation();
+	}, [handleLastOperation]);
 
-	const getColumns = useCallback(() => {
-		const { columnMap, orderedColumnIds } = stableData.current;
-		return orderedColumnIds.map((columnId) => columnMap[columnId]);
-	}, []);
+	// const getColumns = useCallback(() => {
+	// 	const { columnMap, orderedColumnIds } = stableData.current;
+	// 	return orderedColumnIds.map((columnId) => columnMap[columnId]);
+	// }, []);
 
 	const reorderColumn = useCallback(
 		({
@@ -438,6 +446,7 @@ export const BoardExample = () => {
 
 	const contextValue: BoardContextValue = useMemo(() => {
 		return {
+			boardState: boardStateRef,
 			getColumns,
 			reorderColumn,
 			reorderCard,

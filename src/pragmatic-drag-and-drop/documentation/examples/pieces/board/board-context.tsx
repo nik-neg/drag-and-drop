@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, RefObject, useContext } from 'react';
 
 import invariant from 'tiny-invariant';
 
@@ -6,9 +6,12 @@ import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
 
 import type { ColumnType } from '../../data/people';
 import { TriggerEnum } from 'enums/trigger.enum';
+import { BoardState } from 'example';
 
 export type BoardContextValue = {
-	getColumns: () => any[];
+	boardState: RefObject<BoardState>;
+
+	getColumns: () => ColumnType[];
 
 	reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
@@ -31,7 +34,7 @@ export type BoardContextValue = {
 
 export const BoardContext = createContext<BoardContextValue | null>(null);
 
-export function useBoardContext() {
+export const useBoardContext = () => {
 	const context = useContext(BoardContext);
 	if (!context) {
 		throw new Error('useBoardContext must be used within a BoardContext.Provider');
