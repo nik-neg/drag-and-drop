@@ -2,7 +2,6 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 import invariant from 'tiny-invariant';
-import { Card } from './card';
 import { IconButton } from '@atlaskit/button/new';
 import DropdownMenu, {
   type CustomTriggerProps,
@@ -12,8 +11,6 @@ import DropdownMenu, {
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import Heading from '@atlaskit/heading';
 import MoreIcon from '@atlaskit/icon/utility/migration/show-more-horizontal--editor-more';
-import { easeInOut } from '@atlaskit/motion/curves';
-import { durations } from '@atlaskit/motion/durations';
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element';
 import {
   attachClosestEdge,
@@ -30,108 +27,18 @@ import { centerUnderPointer } from '@atlaskit/pragmatic-drag-and-drop/element/ce
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import { Box, Flex, Inline, Stack, xcss } from '@atlaskit/primitives';
 import { token } from '@atlaskit/tokens';
-
-import { type ColumnType } from '../../data/people';
-
-import { useBoardContext } from './board-context';
-import { ColumnContext, type ColumnContextProps, useColumnContext } from './column-context';
-
-const columnStyles = xcss({
-  width: '250px',
-  backgroundColor: 'elevation.surface.sunken',
-  borderRadius: 'border.radius.300',
-  transition: `background ${durations.medium}ms ${easeInOut}`,
-  position: 'relative',
-  /**
-   * TODO: figure out hover color.
-   * There is no `elevation.surface.sunken.hovered` token,
-   * so leaving this for now.
-   */
-});
-
-const stackStyles = xcss({
-  // allow the container to be shrunk by a parent height
-  // https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/#the-minimum-size-gotcha-11
-  minHeight: '0',
-
-  // ensure our card list grows to be all the available space
-  // so that users can easily drop on en empty list
-  flexGrow: 1,
-});
-
-const scrollContainerStyles = xcss({
-  height: '100%',
-  overflowY: 'auto',
-});
-
-const cardListStyles = xcss({
-  boxSizing: 'border-box',
-  minHeight: '100%',
-  padding: 'space.100',
-  gap: 'space.100',
-});
-
-const columnHeaderStyles = xcss({
-  paddingInlineStart: 'space.200',
-  paddingInlineEnd: 'space.200',
-  paddingBlockStart: 'space.100',
-  color: 'color.text.subtlest',
-  userSelect: 'none',
-});
-
-/**
- * Note: not making `'is-dragging'` a `State` as it is
- * a _parallel_ state to `'is-column-over'`.
- *
- * Our board allows you to be over the column that is currently dragging
- */
-type State =
-  | { type: 'idle' }
-  | { type: 'is-card-over' }
-  | { type: 'is-column-over'; closestEdge: Edge | null }
-  | { type: 'generate-safari-column-preview'; container: HTMLElement }
-  | { type: 'generate-column-preview' };
+import { type ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import { useBoardContext } from '@/provider/context';
+import { ColumnContext, type ColumnContextProps, useColumnContext } from '@/provider/context';
+import { cardListStyles, isDraggingStyles, stateStyles } from './column.styles';
+import { columnHeaderStyles, scrollContainerStyles, stackStyles } from './column.styles';
+import { columnStyles } from './column.styles';
+import { Card } from '@/components/card/card';
+import { type State } from './types';
 
 // preventing re-renders with stable state objects
-const idle: State = { type: 'idle' };
-const isCardOver: State = { type: 'is-card-over' };
-
-const stateStyles: {
-  [key in State['type']]: ReturnType<typeof xcss> | undefined;
-} = {
-  idle: xcss({
-    cursor: 'grab',
-  }),
-  'is-card-over': xcss({
-    backgroundColor: 'color.background.selected.hovered',
-  }),
-  'is-column-over': undefined,
-  /**
-   * **Browser bug workaround**
-   *
-   * _Problem_
-   * When generating a drag preview for an element
-   * that has an inner scroll container, the preview can include content
-   * vertically before or after the element
-   *
-   * _Fix_
-   * We make the column a new stacking context when the preview is being generated.
-   * We are not making a new stacking context at all times, as this _can_ mess up
-   * other layering components inside of your card
-   *
-   * _Fix: Safari_
-   * We have not found a great workaround yet. So for now we are just rendering
-   * a custom drag preview
-   */
-  'generate-column-preview': xcss({
-    isolation: 'isolate',
-  }),
-  'generate-safari-column-preview': undefined,
-};
-
-const isDraggingStyles = xcss({
-  opacity: 0.4,
-});
+export const idle: State = { type: 'idle' };
+export const isCardOver: State = { type: 'is-card-over' };
 
 export const Column = memo(({ column }: { column: ColumnType }) => {
   const columnId = column.columnId;

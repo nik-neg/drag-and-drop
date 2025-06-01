@@ -2,56 +2,18 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { triggerPostMoveFlash } from '@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash';
 import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
-
-import {
-  type ColumnMap,
-  getBasicData,
-} from './pragmatic-drag-and-drop/documentation/examples/data/people';
-import { Board } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board';
-import {
-  BoardContext,
-  type BoardContextValue,
-} from './pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
-import { Column } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/column';
-import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
-import { OutcomeEnum } from './enums/outcome.enum';
-import { TriggerEnum } from './enums/trigger.enum';
-import { useBoard } from './hooks/useBoard';
-
-export type Outcome =
-  | {
-      type: OutcomeEnum.COLUMN_REORDER;
-      columnId: string;
-      startIndex: number;
-      finishIndex: number;
-    }
-  | {
-      type: OutcomeEnum.CARD_REORDER;
-      columnId: string;
-      startIndex: number;
-      finishIndex: number;
-    }
-  | {
-      type: OutcomeEnum.CARD_MOVE;
-      finishColumnId: string;
-      itemIndexInStartColumn: number;
-      itemIndexInFinishColumn: number;
-    };
-
-export type Operation = {
-  trigger: TriggerEnum;
-  outcome: Outcome;
-};
-
-export type BoardState = {
-  columnMap: ColumnMap;
-  orderedColumnIds: string[];
-  lastOperation: Operation | null;
-};
+import { getBasicData } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import { BoardContext, type BoardContextValue } from '@/provider/context';
+import { Column } from '@/components/column/column';
+import { createRegistry } from '@/provider/registry';
+import { TriggerEnum } from '@/enums/trigger.enum';
+import { useBoard } from '@/hooks/useBoard';
+import { SBoardContainer } from './board.styles';
+import { type BoardState } from './types';
 
 const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
-export const BoardExample = () => {
+export const Board = () => {
   const [data, setData] = useState<BoardState>(initialData);
 
   const handleSetData = useCallback((data: BoardState) => {
@@ -119,11 +81,11 @@ export const BoardExample = () => {
 
   return (
     <BoardContext.Provider value={contextValue}>
-      <Board>
+      <SBoardContainer>
         {data.orderedColumnIds.map(columnId => {
           return <Column column={data.columnMap[columnId]} key={columnId} />;
         })}
-      </Board>
+      </SBoardContainer>
     </BoardContext.Provider>
   );
 };

@@ -1,8 +1,8 @@
-import type { BoardState } from '@/board-example';
+import type { BoardState } from '@/components/board/types';
 import { DataTypeEnum } from '@/enums/data-type.enum';
 import { TriggerEnum } from '@/enums/trigger.enum';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
-import type { Registry } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
+import type { Registry } from '@/provider/registry';
 import { getReorderDestinationIndex } from '@atlaskit/pragmatic-drag-and-drop-hitbox/util/get-reorder-destination-index';
 import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/dist/types/types';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
