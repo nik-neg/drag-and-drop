@@ -17,10 +17,11 @@ import { ActionMenu } from '../action-menu/action-menu';
 import { SafariColumnPreview } from './previews/safari-column-preview';
 import { useColumn } from './useColumn';
 import Heading from '@atlaskit/heading';
+import { StateEnum } from '@/enums/state.enum';
 
 // preventing re-renders with stable state objects
-export const idle: State = { type: 'idle' };
-export const isCardOver: State = { type: 'is-card-over' };
+export const idle: State = { type: StateEnum.IDLE };
+export const isCardOver: State = { type: StateEnum.IS_CARD_OVER };
 
 export const Column = memo(({ column }: IColumn) => {
   const { columnId, columnRef, columnInnerRef, headerRef, scrollableRef, state, isDragging } =

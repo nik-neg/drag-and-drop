@@ -18,6 +18,7 @@ import { attachClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/clos
 import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/types';
 import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/entry-point/types';
 import { DataTypeEnum } from '@/enums/data-type.enum';
+import { StateEnum } from '@/enums/state.enum';
 
 export const useColumn = ({ column }: IColumn) => {
   const columnId = column.columnId;
@@ -112,7 +113,7 @@ export const useColumn = ({ column }: IColumn) => {
         },
         onDragEnter: args => {
           setState({
-            type: 'is-column-over',
+            type: StateEnum.IS_COLUMN_OVER,
             closestEdge: extractClosestEdge(args.self.data),
           });
         },
@@ -120,11 +121,11 @@ export const useColumn = ({ column }: IColumn) => {
           // skip react re-render if edge is not changing
           setState(current => {
             const closestEdge: Edge | null = extractClosestEdge(args.self.data);
-            if (current.type === 'is-column-over' && current.closestEdge === closestEdge) {
+            if (current.type === StateEnum.IS_COLUMN_OVER && current.closestEdge === closestEdge) {
               return current;
             }
             return {
-              type: 'is-column-over',
+              type: StateEnum.IS_COLUMN_OVER,
               closestEdge,
             };
           });
