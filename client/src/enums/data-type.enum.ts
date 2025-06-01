@@ -1,4 +1,4 @@
 export enum DataTypeEnum {
-    COLUMN = 'column',
-    CARD = 'card',
+  COLUMN = 'column',
+  CARD = 'card',
 }

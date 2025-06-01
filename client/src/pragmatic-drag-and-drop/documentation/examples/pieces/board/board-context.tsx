@@ -7,39 +7,48 @@ import type { RefObject } from 'react';
 
 import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
 import { TriggerEnum } from '@/enums/trigger.enum';
-import type { BoardState } from '@/example';
+import type { BoardState } from '@/board-example';
 
 export type BoardContextValue = {
-	boardState: RefObject<BoardState>;
-	handleSetData: (data: BoardState) => void;
+  boardState: RefObject<BoardState>;
+  handleSetData: (data: BoardState) => void;
 
-	getColumns: () => ColumnType[];
+  getColumns: () => ColumnType[];
 
-	reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
+  reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
-	reorderCardInSameColumn: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
+  reorderCardInSameColumn: (args: {
+    columnId: string;
+    startIndex: number;
+    finishIndex: number;
+    trigger?: TriggerEnum;
+  }) => void;
 
-	moveCardToNewColumn: (args: {
-		startColumnId: string;
-		finishColumnId: string;
-		itemIndexInStartColumn: number;
-		itemIndexInFinishColumn?: number;
-		trigger?: TriggerEnum;
-	}) => void;
+  moveCardToNewColumn: (args: {
+    startColumnId: string;
+    finishColumnId: string;
+    itemIndexInStartColumn: number;
+    itemIndexInFinishColumn?: number;
+    trigger?: TriggerEnum;
+  }) => void;
 
-	registerCard: (args: { cardId: string; element: HTMLElement; actionMenuTrigger: HTMLElement }) => void;
+  registerCard: (args: {
+    cardId: string;
+    element: HTMLElement;
+    actionMenuTrigger: HTMLElement;
+  }) => void;
 
-	registerColumn: (args: { columnId: string; element: HTMLElement }) => void;
+  registerColumn: (args: { columnId: string; element: HTMLElement }) => void;
 
-	instanceId: symbol;
+  instanceId: symbol;
 };
 
 export const BoardContext = createContext<BoardContextValue | null>(null);
 
 export const useBoardContext = () => {
-	const context = useContext(BoardContext);
-	if (!context) {
-		throw new Error('useBoardContext must be used within a BoardContext.Provider');
-	}
-	return context;
-}
+  const context = useContext(BoardContext);
+  if (!context) {
+    throw new Error('useBoardContext must be used within a BoardContext.Provider');
+  }
+  return context;
+};
