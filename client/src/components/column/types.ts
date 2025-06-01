@@ -1,3 +1,4 @@
+import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
 import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 
 /**
@@ -12,3 +13,7 @@ export type State =
   | { type: 'is-column-over'; closestEdge: Edge | null }
   | { type: 'generate-safari-column-preview'; container: HTMLElement }
   | { type: 'generate-column-preview' };
+
+export interface IColumn {
+  column: ColumnType;
+}
