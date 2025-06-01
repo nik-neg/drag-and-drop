@@ -1,10 +1,10 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import designSystemPlugin from "@atlaskit/eslint-plugin-design-system";
-import uiStylingStandardPlugin from "@atlaskit/eslint-plugin-ui-styling-standard";
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import designSystemPlugin from '@atlaskit/eslint-plugin-design-system';
+import uiStylingStandardPlugin from '@atlaskit/eslint-plugin-ui-styling-standard';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -18,8 +18,8 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      "@atlaskit/design-system": designSystemPlugin,
-      "@atlaskit/ui-styling-standard": uiStylingStandardPlugin,
+      '@atlaskit/design-system': designSystemPlugin,
+      '@atlaskit/ui-styling-standard': uiStylingStandardPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -27,9 +27,9 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      "@atlaskit/design-system/no-banned-imports": "error",
-      "@atlaskit/ui-styling-standard/no-unsafe-values": "error",
-      "@atlaskit/ui-styling-standard/no-imported-style-values": "error",
+      '@atlaskit/design-system/no-banned-imports': 'error',
+      '@atlaskit/ui-styling-standard/no-unsafe-values': 'error',
+      '@atlaskit/ui-styling-standard/no-imported-style-values': 'error',
     },
-  },
-)
+  }
+);

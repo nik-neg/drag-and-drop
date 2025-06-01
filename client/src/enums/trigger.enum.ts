@@ -1,4 +1,4 @@
 export enum TriggerEnum {
-    POINTER = 'pointer',
-    KEYBOARD = 'keyboard',
+  POINTER = 'pointer',
+  KEYBOARD = 'keyboard',
 }
