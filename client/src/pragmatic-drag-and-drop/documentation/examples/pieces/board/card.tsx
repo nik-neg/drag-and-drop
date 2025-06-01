@@ -94,42 +94,42 @@ export const MoveToOtherColumnItem = memo(({
 	targetColumn: ColumnType;
 	startIndex: number;
 }) => {
-	const { moveCard } = useBoardContext();
+	const { moveCardToNewColumn } = useBoardContext();
 	const { columnId } = useColumnContext();
 
 	const onClick = useCallback(() => {
-		moveCard({
+		moveCardToNewColumn({
 			startColumnId: columnId,
 			finishColumnId: targetColumn.columnId,
 			itemIndexInStartColumn: startIndex,
 		});
-	}, [columnId, moveCard, startIndex, targetColumn.columnId]);
+	}, [columnId, moveCardToNewColumn, startIndex, targetColumn.columnId]);
 
 	return <DropdownItem onClick={onClick}>{targetColumn.title}</DropdownItem>;
 })
 
 export const LazyDropdownItems = memo(({ userId }: { userId: string }) => {
-	const { getColumns, reorderCard } = useBoardContext();
+	const { getColumns, reorderCardInSameColumn } = useBoardContext();
 	const { columnId, getCardIndex, getNumCards } = useColumnContext();
 
 	const numCards = getNumCards();
 	const startIndex = getCardIndex(userId);
 
 	const moveToTop = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: 0 });
-	}, [columnId, reorderCard, startIndex]);
+		reorderCardInSameColumn({ columnId, startIndex, finishIndex: 0 });
+	}, [columnId, reorderCardInSameColumn, startIndex]);
 
 	const moveUp = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: startIndex - 1 });
-	}, [columnId, reorderCard, startIndex]);
+		reorderCardInSameColumn({ columnId, startIndex, finishIndex: startIndex - 1 });
+	}, [columnId, reorderCardInSameColumn, startIndex]);
 
 	const moveDown = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: startIndex + 1 });
-	}, [columnId, reorderCard, startIndex]);
+		reorderCardInSameColumn({ columnId, startIndex, finishIndex: startIndex + 1 });
+	}, [columnId, reorderCardInSameColumn, startIndex]);
 
 	const moveToBottom = useCallback(() => {
-		reorderCard({ columnId, startIndex, finishIndex: numCards - 1 });
-	}, [columnId, reorderCard, startIndex, numCards]);
+		reorderCardInSameColumn({ columnId, startIndex, finishIndex: numCards - 1 });
+	}, [columnId, reorderCardInSameColumn, startIndex, numCards]);
 
 	const isMoveUpDisabled = startIndex === 0;
 	const isMoveDownDisabled = startIndex === numCards - 1;

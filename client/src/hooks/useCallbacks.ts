@@ -86,7 +86,7 @@ export const useCallbacks = () => {
         [],
     );
 
-    const reorderCard = useCallback(
+    const reorderCardInSameColumn = useCallback(
         ({
             columnId,
             startIndex,
@@ -134,7 +134,7 @@ export const useCallbacks = () => {
         }, []
     );
 
-    const moveCard = useCallback(
+    const moveCardToNewColumn = useCallback(
         ({
             startColumnId,
             finishColumnId,
@@ -194,8 +194,8 @@ export const useCallbacks = () => {
     return {
         getColumns,
         reorderColumn,
-        reorderCard,
-        moveCard
+        reorderCardInSameColumn,
+        moveCardToNewColumn
     }
 }
 

@@ -17,9 +17,9 @@ export type BoardContextValue = {
 
 	reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
-	reorderCard: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
+	reorderCardInSameColumn: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
-	moveCard: (args: {
+	moveCardToNewColumn: (args: {
 		startColumnId: string;
 		finishColumnId: string;
 		itemIndexInStartColumn: number;

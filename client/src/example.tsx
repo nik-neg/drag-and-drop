@@ -56,7 +56,7 @@ const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
 export const BoardExample = () => {
 
-	const { getColumns, reorderColumn, reorderCard, moveCard } = useCallbacks();
+	const { getColumns, reorderColumn, reorderCardInSameColumn, moveCardToNewColumn } = useCallbacks();
 
 	const [data, setData] = useState<BoardState>(initialData);
 
@@ -232,7 +232,7 @@ export const BoardExample = () => {
 									closestEdgeOfTarget: null,
 									axis: 'vertical',
 								});
-								reorderCard({
+								reorderCardInSameColumn({
 									columnId: sourceColumn.columnId,
 									startIndex: itemIndex,
 									finishIndex: destinationIndex,
@@ -244,7 +244,7 @@ export const BoardExample = () => {
 							}
 
 							// moving to a new column
-							moveCard({
+							moveCardToNewColumn({
 								itemIndexInStartColumn: itemIndex,
 								startColumnId: sourceColumn.columnId,
 								finishColumnId: destinationColumn.columnId,
@@ -277,7 +277,7 @@ export const BoardExample = () => {
 									closestEdgeOfTarget,
 									axis: 'vertical',
 								});
-								reorderCard({
+								reorderCardInSameColumn({
 									columnId: sourceColumn.columnId,
 									startIndex: itemIndex,
 									finishIndex: destinationIndex,
@@ -293,7 +293,7 @@ export const BoardExample = () => {
 							const destinationIndex =
 								closestEdgeOfTarget === 'bottom' ? indexOfTarget + 1 : indexOfTarget;
 
-							moveCard({
+							moveCardToNewColumn({
 								itemIndexInStartColumn: itemIndex,
 								startColumnId: sourceColumn.columnId,
 								finishColumnId: destinationColumn.columnId,
@@ -307,7 +307,7 @@ export const BoardExample = () => {
 				},
 			}),
 		);
-	}, [data, instanceId, moveCard, reorderCard, reorderColumn]);
+	}, [data, instanceId, moveCardToNewColumn, reorderCardInSameColumn, reorderColumn]);
 
 	const contextValue: BoardContextValue = useMemo(() => {
 		return {
@@ -315,13 +315,13 @@ export const BoardExample = () => {
 			handleSetData,
 			getColumns: () => getColumns({ boardState: boardStateRef }),
 			reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => reorderColumn({ ...args, boardState: boardStateRef, handleSetData }),
-			reorderCard: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => reorderCard({ ...args, boardState: boardStateRef, handleSetData }),
-			moveCard: (args: { startColumnId: string; finishColumnId: string; itemIndexInStartColumn: number; itemIndexInFinishColumn?: number; trigger?: TriggerEnum }) => moveCard({ ...args, boardState: boardStateRef, handleSetData }),
+			reorderCardInSameColumn: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => reorderCardInSameColumn({ ...args, boardState: boardStateRef, handleSetData }),
+			moveCardToNewColumn: (args: { startColumnId: string; finishColumnId: string; itemIndexInStartColumn: number; itemIndexInFinishColumn?: number; trigger?: TriggerEnum }) => moveCardToNewColumn({ ...args, boardState: boardStateRef, handleSetData }),
 			registerCard: registry.registerCard,
 			registerColumn: registry.registerColumn,
 			instanceId,
 		};
-	}, [getColumns, reorderColumn, reorderCard, registry, moveCard, instanceId]);
+	}, [getColumns, reorderColumn, reorderCardInSameColumn, registry, moveCardToNewColumn, instanceId]);
 
 	return (
 		<BoardContext.Provider value={contextValue}>
