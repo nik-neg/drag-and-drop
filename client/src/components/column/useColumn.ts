@@ -17,6 +17,7 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import { attachClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/types';
 import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/entry-point/types';
+import { DataTypeEnum } from '@/enums/data-type.enum';
 
 export const useColumn = ({ column }: IColumn) => {
   const columnId = column.columnId;
@@ -52,7 +53,7 @@ export const useColumn = ({ column }: IColumn) => {
       draggable({
         element: columnRef.current,
         dragHandle: headerRef.current,
-        getInitialData: () => ({ columnId, type: 'column', instanceId }),
+        getInitialData: () => ({ columnId, type: DataTypeEnum.COLUMN, instanceId }),
         onGenerateDragPreview: ({ nativeSetDragImage }) => {
           const isSafari: boolean =
             navigator.userAgent.includes('AppleWebKit') && !navigator.userAgent.includes('Chrome');
@@ -85,7 +86,7 @@ export const useColumn = ({ column }: IColumn) => {
         element: columnInnerRef.current,
         getData: () => ({ columnId }),
         canDrop: ({ source }) => {
-          return source.data.instanceId === instanceId && source.data.type === 'card';
+          return source.data.instanceId === instanceId && source.data.type === DataTypeEnum.CARD;
         },
         getIsSticky: () => true,
         onDragEnter: () => setState(isCardOver),
@@ -96,7 +97,7 @@ export const useColumn = ({ column }: IColumn) => {
       dropTargetForElements({
         element: columnRef.current,
         canDrop: ({ source }) => {
-          return source.data.instanceId === instanceId && source.data.type === 'column';
+          return source.data.instanceId === instanceId && source.data.type === DataTypeEnum.COLUMN;
         },
         getIsSticky: () => true,
         getData: ({ input, element }) => {
@@ -138,7 +139,7 @@ export const useColumn = ({ column }: IColumn) => {
       autoScrollForElements({
         element: scrollableRef.current,
         canScroll: ({ source }) =>
-          source.data.instanceId === instanceId && source.data.type === 'card',
+          source.data.instanceId === instanceId && source.data.type === DataTypeEnum.CARD,
       })
     );
   }, [columnId, registerColumn, instanceId]);

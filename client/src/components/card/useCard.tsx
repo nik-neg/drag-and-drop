@@ -17,9 +17,11 @@ import {
 import { preserveOffsetOnSource } from '@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import { dropTargetForExternal } from '@atlaskit/pragmatic-drag-and-drop/external/adapter';
+import { DataTypeEnum } from '@/enums/data-type.enum';
+import { StateEnum } from '@/enums/state.enum';
 
-const idleState: State = { type: 'idle' };
-const draggingState: State = { type: 'dragging' };
+const idleState: State = { type: StateEnum.IDLE };
+const draggingState: State = { type: StateEnum.DRAGGING };
 
 export const useCard = ({ item }: IUseCard) => {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -54,7 +56,7 @@ export const useCard = ({ item }: IUseCard) => {
     return combine(
       draggable({
         element: element,
-        getInitialData: () => ({ type: 'card', itemId: userId, instanceId }),
+        getInitialData: () => ({ type: DataTypeEnum.CARD, itemId: userId, instanceId }),
         onGenerateDragPreview: ({ location, source, nativeSetDragImage }) => {
           const rect = source.element.getBoundingClientRect();
 
@@ -65,7 +67,7 @@ export const useCard = ({ item }: IUseCard) => {
               input: location.current.input,
             }),
             render({ container }) {
-              setState({ type: 'preview', container, rect });
+              setState({ type: StateEnum.PREVIEW, container, rect });
               return () => setState(draggingState);
             },
           });
@@ -80,11 +82,11 @@ export const useCard = ({ item }: IUseCard) => {
       dropTargetForElements({
         element: element,
         canDrop: ({ source }) => {
-          return source.data.instanceId === instanceId && source.data.type === 'card';
+          return source.data.instanceId === instanceId && source.data.type === DataTypeEnum.CARD;
         },
         getIsSticky: () => true,
         getData: ({ input, element }) => {
-          const data = { type: 'card', itemId: userId };
+          const data = { type: DataTypeEnum.CARD, itemId: userId };
 
           return attachClosestEdge(data, {
             input,
