@@ -23,15 +23,22 @@ const draggingState: State = { type: 'dragging' };
 
 export const useCard = ({ item }: IUseCard) => {
   const ref = useRef<HTMLDivElement | null>(null);
+
   const { userId } = item;
+
   const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
+
   const [state, setState] = useState<State>(idleState);
 
   const actionMenuTriggerRef = useRef<HTMLButtonElement>(null);
+
   const { instanceId, registerCard } = useBoardContext();
+
   useEffect(() => {
     invariant(actionMenuTriggerRef.current);
+
     invariant(ref.current);
+
     return registerCard({
       cardId: userId,
       element: ref.current,
@@ -41,7 +48,9 @@ export const useCard = ({ item }: IUseCard) => {
 
   useEffect(() => {
     const element = ref.current;
+
     invariant(element);
+
     return combine(
       draggable({
         element: element,

@@ -16,28 +16,39 @@ import { centerUnderPointer } from '@atlaskit/pragmatic-drag-and-drop/element/ce
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import { attachClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/types';
+import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/dist/types/entry-point/types';
 
 export const useColumn = ({ column }: IColumn) => {
   const columnId = column.columnId;
+
   const columnRef = useRef<HTMLDivElement | null>(null);
+
   const columnInnerRef = useRef<HTMLDivElement | null>(null);
+
   const headerRef = useRef<HTMLDivElement | null>(null);
+
   const scrollableRef = useRef<HTMLDivElement | null>(null);
+
   const [state, setState] = useState<State>(idle);
+
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const { instanceId, registerColumn } = useBoardContext();
 
   useEffect(() => {
     invariant(columnRef.current);
+
     invariant(columnInnerRef.current);
+
     invariant(headerRef.current);
+
     invariant(scrollableRef.current);
+
     return combine(
       registerColumn({
         columnId,
         element: columnRef.current,
-      }) as any,
+      }) as unknown as CleanupFn,
       draggable({
         element: columnRef.current,
         dragHandle: headerRef.current,
