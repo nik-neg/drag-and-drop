@@ -83,9 +83,7 @@ export const useBoard = ({
             const indexOfTarget: number = data.orderedColumnIds.findIndex(
               id => id === target.data.columnId
             );
-            const closestEdgeOfTarget: Edge | null = extractClosestEdge(
-              target.data
-            );
+            const closestEdgeOfTarget: Edge | null = extractClosestEdge(target.data);
 
             const finishIndex = getReorderDestinationIndex({
               startIndex,
@@ -111,9 +109,7 @@ export const useBoard = ({
             const sourceId = startColumnRecord.data.columnId;
             invariant(typeof sourceId === 'string');
             const sourceColumn = data.columnMap[sourceId];
-            const itemIndex = sourceColumn.items.findIndex(
-              item => item.userId === itemId
-            );
+            const itemIndex = sourceColumn.items.findIndex(item => item.userId === itemId);
 
             if (location.current.dropTargets.length === 1) {
               const [destinationColumnRecord] = location.current.dropTargets;
@@ -155,8 +151,7 @@ export const useBoard = ({
 
             // dropping in a column (relative to a card)
             if (location.current.dropTargets.length === 2) {
-              const [destinationCardRecord, destinationColumnRecord] =
-                location.current.dropTargets;
+              const [destinationCardRecord, destinationColumnRecord] = location.current.dropTargets;
               const destinationColumnId = destinationColumnRecord.data.columnId;
               invariant(typeof destinationColumnId === 'string');
               const destinationColumn = data.columnMap[destinationColumnId];
@@ -190,9 +185,7 @@ export const useBoard = ({
               // case 2: moving into a new column relative to a card
 
               const destinationIndex =
-                closestEdgeOfTarget === 'bottom'
-                  ? indexOfTarget + 1
-                  : indexOfTarget;
+                closestEdgeOfTarget === 'bottom' ? indexOfTarget + 1 : indexOfTarget;
 
               moveCardToNewColumn({
                 itemIndexInStartColumn: itemIndex,
@@ -208,13 +201,7 @@ export const useBoard = ({
         },
       })
     );
-  }, [
-    data,
-    instanceId,
-    moveCardToNewColumn,
-    reorderCardInSameColumn,
-    reorderColumn,
-  ]);
+  }, [data, instanceId, moveCardToNewColumn, reorderCardInSameColumn, reorderColumn]);
 
   return {
     getColumns,

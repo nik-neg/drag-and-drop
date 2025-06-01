@@ -252,11 +252,7 @@ export const useCallbacks = () => {
       }
 
       if (outcome.type === OutcomeEnum.CARD_MOVE) {
-        const {
-          finishColumnId,
-          itemIndexInStartColumn,
-          itemIndexInFinishColumn,
-        } = outcome;
+        const { finishColumnId, itemIndexInStartColumn, itemIndexInFinishColumn } = outcome;
 
         const data = boardStateRef.current;
         const destinationColumn = data.columnMap[finishColumnId];

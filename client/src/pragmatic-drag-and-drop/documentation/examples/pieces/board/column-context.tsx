@@ -13,9 +13,7 @@ export const ColumnContext = createContext<ColumnContextProps | null>(null);
 export function useColumnContext() {
   const context = useContext(ColumnContext);
   if (!context) {
-    throw new Error(
-      'useColumnContext must be used within a ColumnContext.Provider'
-    );
+    throw new Error('useColumnContext must be used within a ColumnContext.Provider');
   }
   return context;
 }

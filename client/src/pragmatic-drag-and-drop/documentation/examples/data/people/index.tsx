@@ -105,11 +105,7 @@ export const getPerson = (): Person => {
   return getPersonFromPosition({ position: sharedLookupIndex });
 };
 
-export const getPersonFromPosition = ({
-  position,
-}: {
-  position: number;
-}): Person => {
+export const getPersonFromPosition = ({ position }: { position: number }): Person => {
   // use the next name
   const name = names[position % names.length];
   // use the next role
@@ -129,9 +125,7 @@ export const getPeopleFromPosition = ({
   amount: number;
   startIndex: number;
 }): Person[] => {
-  return Array.from({ length: amount }, () =>
-    getPersonFromPosition({ position: startIndex++ })
-  );
+  return Array.from({ length: amount }, () => getPersonFromPosition({ position: startIndex++ }));
 };
 
 export const getPeople = ({ amount }: { amount: number }): Person[] => {

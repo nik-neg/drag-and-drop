@@ -15,11 +15,7 @@ export type BoardContextValue = {
 
   getColumns: () => ColumnType[];
 
-  reorderColumn: (args: {
-    startIndex: number;
-    finishIndex: number;
-    trigger?: TriggerEnum;
-  }) => void;
+  reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
   reorderCardInSameColumn: (args: {
     columnId: string;
@@ -52,9 +48,7 @@ export const BoardContext = createContext<BoardContextValue | null>(null);
 export const useBoardContext = () => {
   const context = useContext(BoardContext);
   if (!context) {
-    throw new Error(
-      'useBoardContext must be used within a BoardContext.Provider'
-    );
+    throw new Error('useBoardContext must be used within a BoardContext.Provider');
   }
   return context;
 };

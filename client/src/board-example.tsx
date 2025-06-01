@@ -16,9 +16,7 @@ import { Column } from './pragmatic-drag-and-drop/documentation/examples/pieces/
 import { createRegistry } from './pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
 import { OutcomeEnum } from './enums/outcome.enum';
 import { TriggerEnum } from './enums/trigger.enum';
-import { useCallbacks } from './hooks/useCallbacks';
 import { useBoard } from './hooks/useBoard';
-// import { getColumns, moveCard, reorderCard, reorderColumn } from './useCallbacks';
 
 export type Outcome =
   | {
@@ -66,12 +64,7 @@ export const BoardExample = () => {
 
   const [instanceId] = useState(() => Symbol('instance-id'));
 
-  const {
-    getColumns,
-    reorderColumn,
-    reorderCardInSameColumn,
-    moveCardToNewColumn,
-  } = useBoard({
+  const { getColumns, reorderColumn, reorderCardInSameColumn, moveCardToNewColumn } = useBoard({
     data,
     handleSetData,
     boardStateRef,
@@ -86,11 +79,7 @@ export const BoardExample = () => {
       boardState: boardStateRef,
       handleSetData,
       getColumns: () => getColumns({ boardState: boardStateRef }),
-      reorderColumn: (args: {
-        startIndex: number;
-        finishIndex: number;
-        trigger?: TriggerEnum;
-      }) =>
+      reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) =>
         reorderColumn({ ...args, boardState: boardStateRef, handleSetData }),
       reorderCardInSameColumn: (args: {
         columnId: string;

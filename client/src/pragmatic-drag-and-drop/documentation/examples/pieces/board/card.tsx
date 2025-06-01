@@ -14,10 +14,7 @@ import invariant from 'tiny-invariant';
 
 import Avatar from '@atlaskit/avatar';
 import { IconButton } from '@atlaskit/button/new';
-import DropdownMenu, {
-  DropdownItem,
-  DropdownItemGroup,
-} from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import Heading from '@atlaskit/heading';
 import MoreIcon from '@atlaskit/icon/utility/migration/show-more-horizontal--editor-more';
@@ -91,13 +88,7 @@ type CardPrimitiveProps = {
 };
 
 export const MoveToOtherColumnItem = memo(
-  ({
-    targetColumn,
-    startIndex,
-  }: {
-    targetColumn: ColumnType;
-    startIndex: number;
-  }) => {
+  ({ targetColumn, startIndex }: { targetColumn: ColumnType; startIndex: number }) => {
     const { moveCardToNewColumn } = useBoardContext();
     const { columnId } = useColumnContext();
 
@@ -151,9 +142,7 @@ export const LazyDropdownItems = memo(({ userId }: { userId: string }) => {
   const isMoveUpDisabled = startIndex === 0;
   const isMoveDownDisabled = startIndex === numCards - 1;
 
-  const moveColumnOptions = getColumns().filter(
-    column => column.columnId !== columnId
-  );
+  const moveColumnOptions = getColumns().filter(column => column.columnId !== columnId);
 
   return (
     <Fragment>
@@ -233,9 +222,7 @@ export const CardPrimitive = forwardRef<HTMLDivElement, CardPrimitiveProps>(
           </DropdownMenu>
         </Box>
 
-        {closestEdge && (
-          <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />
-        )}
+        {closestEdge && <DropIndicator edge={closestEdge} gap={token('space.100', '0')} />}
       </Grid>
     );
   }
@@ -291,9 +278,7 @@ export const Card = memo(({ item }: { item: Person }) => {
       dropTargetForElements({
         element: element,
         canDrop: ({ source }) => {
-          return (
-            source.data.instanceId === instanceId && source.data.type === 'card'
-          );
+          return source.data.instanceId === instanceId && source.data.type === 'card';
         },
         getIsSticky: () => true,
         getData: ({ input, element }) => {

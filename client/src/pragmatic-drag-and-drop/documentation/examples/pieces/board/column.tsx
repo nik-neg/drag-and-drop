@@ -34,11 +34,7 @@ import { token } from '@atlaskit/tokens';
 import { type ColumnType } from '../../data/people';
 
 import { useBoardContext } from './board-context';
-import {
-  ColumnContext,
-  type ColumnContextProps,
-  useColumnContext,
-} from './column-context';
+import { ColumnContext, type ColumnContextProps, useColumnContext } from './column-context';
 
 const columnStyles = xcss({
   width: '250px',
@@ -164,8 +160,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
         getInitialData: () => ({ columnId, type: 'column', instanceId }),
         onGenerateDragPreview: ({ nativeSetDragImage }) => {
           const isSafari: boolean =
-            navigator.userAgent.includes('AppleWebKit') &&
-            !navigator.userAgent.includes('Chrome');
+            navigator.userAgent.includes('AppleWebKit') && !navigator.userAgent.includes('Chrome');
 
           if (!isSafari) {
             setState({ type: 'generate-column-preview' });
@@ -195,9 +190,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
         element: columnInnerRef.current,
         getData: () => ({ columnId }),
         canDrop: ({ source }) => {
-          return (
-            source.data.instanceId === instanceId && source.data.type === 'card'
-          );
+          return source.data.instanceId === instanceId && source.data.type === 'card';
         },
         getIsSticky: () => true,
         onDragEnter: () => setState(isCardOver),
@@ -208,10 +201,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
       dropTargetForElements({
         element: columnRef.current,
         canDrop: ({ source }) => {
-          return (
-            source.data.instanceId === instanceId &&
-            source.data.type === 'column'
-          );
+          return source.data.instanceId === instanceId && source.data.type === 'column';
         },
         getIsSticky: () => true,
         getData: ({ input, element }) => {
@@ -234,10 +224,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
           // skip react re-render if edge is not changing
           setState(current => {
             const closestEdge: Edge | null = extractClosestEdge(args.self.data);
-            if (
-              current.type === 'is-column-over' &&
-              current.closestEdge === closestEdge
-            ) {
+            if (current.type === 'is-column-over' && current.closestEdge === closestEdge) {
               return current;
             }
             return {
@@ -291,9 +278,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
           that take up the same visual space (one for cards, one for columns)
         */}
         <Stack xcss={stackStyles} ref={columnInnerRef}>
-          <Stack
-            xcss={[stackStyles, isDragging ? isDraggingStyles : undefined]}
-          >
+          <Stack xcss={[stackStyles, isDragging ? isDraggingStyles : undefined]}>
             <Inline
               xcss={columnHeaderStyles}
               ref={headerRef}
@@ -301,11 +286,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
               spread="space-between"
               alignBlock="center"
             >
-              <Heading
-                size="xxsmall"
-                as="span"
-                testId={`column-header-title-${columnId}`}
-              >
+              <Heading size="xxsmall" as="span" testId={`column-header-title-${columnId}`}>
                 {column.title}
               </Heading>
               <ActionMenu />
@@ -320,10 +301,7 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
           </Stack>
         </Stack>
         {state.type === 'is-column-over' && state.closestEdge && (
-          <DropIndicator
-            edge={state.closestEdge}
-            gap={token('space.200', '0')}
-          />
+          <DropIndicator edge={state.closestEdge} gap={token('space.200', '0')} />
         )}
       </Flex>
       {state.type === 'generate-safari-column-preview'
@@ -340,17 +318,15 @@ const safariPreviewStyles = xcss({
   padding: 'space.200',
 });
 
-export const SafariColumnPreview = memo(
-  ({ column }: { column: ColumnType }) => {
-    return (
-      <Box xcss={[columnHeaderStyles, safariPreviewStyles]}>
-        <Heading size="xxsmall" as="span">
-          {column.title}
-        </Heading>
-      </Box>
-    );
-  }
-);
+export const SafariColumnPreview = memo(({ column }: { column: ColumnType }) => {
+  return (
+    <Box xcss={[columnHeaderStyles, safariPreviewStyles]}>
+      <Heading size="xxsmall" as="span">
+        {column.title}
+      </Heading>
+    </Box>
+  );
+});
 
 export const ActionMenu = memo(() => {
   return (
@@ -396,10 +372,7 @@ export const ActionMenuItems = memo(() => {
   );
 });
 
-function DropdownMenuTrigger({
-  triggerRef,
-  ...triggerProps
-}: CustomTriggerProps) {
+function DropdownMenuTrigger({ triggerRef, ...triggerProps }: CustomTriggerProps) {
   return (
     <IconButton
       ref={mergeRefs([triggerRef])}

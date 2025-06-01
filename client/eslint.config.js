@@ -23,10 +23,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@atlaskit/design-system/no-banned-imports': 'error',
       '@atlaskit/ui-styling-standard/no-unsafe-values': 'error',
       '@atlaskit/ui-styling-standard/no-imported-style-values': 'error',
