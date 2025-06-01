@@ -220,9 +220,7 @@ export const useCallbacks = () => {
         triggerPostMoveFlash(entry.element);
 
         liveRegion.announce(
-          `You've moved ${sourceColumn.title} from position ${
-            startIndex + 1
-          } to position ${finishIndex + 1} of ${orderedColumnIds.length}.`
+          `You've moved ${sourceColumn.title} from position ${startIndex + 1} to position ${finishIndex + 1} of ${orderedColumnIds.length}.`
         );
 
         return;
