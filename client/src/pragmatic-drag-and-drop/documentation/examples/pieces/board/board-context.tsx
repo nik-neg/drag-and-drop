@@ -1,12 +1,13 @@
-import React, { createContext, RefObject, useContext } from 'react';
+import { createContext, useContext } from 'react';
+import type { RefObject } from 'react';
 
-import invariant from 'tiny-invariant';
+// import invariant from 'tiny-invariant';
 
-import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
+// import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
 
-import type { ColumnType } from '../../data/people';
-import { TriggerEnum } from 'enums/trigger.enum';
-import { BoardState } from 'example';
+import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import { TriggerEnum } from '@/enums/trigger.enum';
+import type { BoardState } from '@/example';
 
 export type BoardContextValue = {
 	boardState: RefObject<BoardState>;
@@ -16,9 +17,9 @@ export type BoardContextValue = {
 
 	reorderColumn: (args: { startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
-	reorderCard: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
+	reorderCardInSameColumn: (args: { columnId: string; startIndex: number; finishIndex: number; trigger?: TriggerEnum }) => void;
 
-	moveCard: (args: {
+	moveCardToNewColumn: (args: {
 		startColumnId: string;
 		finishColumnId: string;
 		itemIndexInStartColumn: number;
