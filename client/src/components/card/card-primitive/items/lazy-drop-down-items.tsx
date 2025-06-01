@@ -1,7 +1,5 @@
 import { DropdownItem } from '@atlaskit/dropdown-menu';
 
-import { Fragment } from 'react/jsx-runtime';
-
 import { useCallback } from 'react';
 
 import { useColumnContext } from '@/provider/context';
@@ -53,7 +51,7 @@ export const LazyDropdownItems = memo(({ userId }: LazyDropdownItemsProps) => {
   const moveColumnOptions = getColumns().filter(column => column.columnId !== columnId);
 
   return (
-    <Fragment>
+    <>
       <DropdownItemGroup title="Reorder">
         <DropdownItem onClick={moveToTop} isDisabled={isMoveUpDisabled}>
           Move to top
@@ -79,6 +77,6 @@ export const LazyDropdownItems = memo(({ userId }: LazyDropdownItemsProps) => {
           ))}
         </DropdownItemGroup>
       ) : null}
-    </Fragment>
+    </>
   );
 });

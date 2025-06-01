@@ -1,4 +1,4 @@
-import { Fragment, memo } from 'react';
+import { memo } from 'react';
 
 import ReactDOM from 'react-dom';
 
@@ -14,7 +14,7 @@ export const Card = memo(({ item }: { item: Person }) => {
   const { ref, closestEdge, state, actionMenuTriggerRef } = useCard({ item });
 
   return (
-    <Fragment>
+    <>
       <CardPrimitive
         ref={ref}
         item={item}
@@ -41,6 +41,6 @@ export const Card = memo(({ item }: { item: Person }) => {
           </Box>,
           state.container
         )}
-    </Fragment>
+    </>
   );
 });
