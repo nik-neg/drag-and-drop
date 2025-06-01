@@ -5,7 +5,7 @@ import type { RefObject } from 'react';
 
 // import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
 
-import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import type { ColumnType } from '@/data';
 import { TriggerEnum } from '@/enums/trigger.enum';
 import type { BoardState } from '@/components/board/types';
 

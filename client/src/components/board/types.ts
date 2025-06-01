@@ -1,6 +1,6 @@
 import { OutcomeEnum } from '@/enums/outcome.enum';
 import { TriggerEnum } from '@/enums/trigger.enum';
-import type { ColumnMap } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import type { ColumnMap } from '@/data';
 
 export type Outcome =
   | {

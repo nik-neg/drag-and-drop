@@ -1,4 +1,4 @@
-import { type ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import { type ColumnType } from '@/data';
 
 export interface MoveToOtherColumnItemProps {
   targetColumn: ColumnType;

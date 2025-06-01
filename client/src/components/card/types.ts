@@ -1,4 +1,4 @@
-import type { Person } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import type { Person } from '@/data';
 import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/dist/types/types';
 import type { Ref } from 'react';
 

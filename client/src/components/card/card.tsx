@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import { Box } from '@atlaskit/primitives';
 
-import { type Person } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import { type Person } from '@/data';
 
 import { CardPrimitive } from './card-primitive/card-primitive';
 import { useCard } from './useCard';

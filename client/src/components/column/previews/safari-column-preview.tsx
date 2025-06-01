@@ -3,7 +3,7 @@ import { xcss } from '@atlaskit/primitives';
 import Heading from '@atlaskit/heading';
 import { Box } from '@atlaskit/primitives';
 import { memo } from 'react';
-import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import type { ColumnType } from '@/data';
 import { columnHeaderStyles } from '../column.styles';
 
 const safariPreviewStyles = xcss({

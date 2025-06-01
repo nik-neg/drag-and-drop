@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { triggerPostMoveFlash } from '@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash';
 import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
-import { getBasicData } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
+import { getBasicData } from '@/data';
 import { BoardContext, type BoardContextValue } from '@/provider/context';
 import { Column } from '@/components/column/column';
 import { createRegistry } from '@/provider/registry';
