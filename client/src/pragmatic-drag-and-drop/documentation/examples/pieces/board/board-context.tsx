@@ -7,7 +7,7 @@ import type { RefObject } from 'react';
 
 import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
 import { TriggerEnum } from '@/enums/trigger.enum';
-import type { BoardState } from '@/example';
+import type { BoardState } from '@/board-example';
 
 export type BoardContextValue = {
 	boardState: RefObject<BoardState>;

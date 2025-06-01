@@ -1,11 +1,12 @@
 import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import { OutcomeEnum } from "@/enums/outcome.enum";
 import { TriggerEnum } from "@/enums/trigger.enum";
-import type { BoardState, Outcome } from "@/example";
+import type { BoardState, Operation, Outcome } from "@/board-example";
 import type { ColumnMap, Person } from "@/pragmatic-drag-and-drop/documentation/examples/data/people";
 import type { ColumnType } from "@/pragmatic-drag-and-drop/documentation/examples/data/people";
 import type { RefObject } from 'react';
 import { useCallback } from 'react';
+import type { Registry } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
 
 
 interface IGetColumnsProps {
@@ -42,6 +43,14 @@ interface IMoveCardProps {
     trigger?: TriggerEnum;
     boardState: RefObject<BoardState>;
     handleSetData: (data: BoardState) => void;
+}
+
+interface IHandleLastOperationProps {
+    lastOperation: Operation | null;
+    boardStateRef: RefObject<BoardState>;
+    registry: Registry;
+    triggerPostMoveFlash: (element: HTMLElement) => void;
+    liveRegion: { announce: (message: string) => void };
 }
 
 
@@ -190,12 +199,102 @@ export const useCallbacks = () => {
             handleSetData(newBoardState);
         }, []);
 
+    const handleLastOperation = useCallback(({
+        lastOperation,
+        boardStateRef,
+        registry,
+        triggerPostMoveFlash,
+        liveRegion,
+    }: IHandleLastOperationProps) => {
+        if (lastOperation === null) {
+            return;
+        }
+        const { outcome, trigger } = lastOperation;
+
+        if (outcome.type === OutcomeEnum.COLUMN_REORDER) {
+            const { startIndex, finishIndex } = outcome;
+
+            const { columnMap, orderedColumnIds } = boardStateRef.current;
+
+            const sourceColumn = columnMap[orderedColumnIds[finishIndex]];
+
+            const entry = registry.getColumn(sourceColumn.columnId);
+
+            triggerPostMoveFlash(entry.element);
+
+            liveRegion.announce(
+                `You've moved ${sourceColumn.title} from position ${startIndex + 1
+                } to position ${finishIndex + 1} of ${orderedColumnIds.length}.`,
+            );
+
+            return;
+        }
+
+        if (outcome.type === OutcomeEnum.CARD_REORDER) {
+            const { columnId, startIndex, finishIndex } = outcome;
+
+            const { columnMap } = boardStateRef.current;
+            const column = columnMap[columnId];
+            const item = column.items[finishIndex];
+
+            const entry = registry.getCard(item.userId);
+            triggerPostMoveFlash(entry.element);
+
+            if (trigger !== 'keyboard') {
+                return;
+            }
+
+            liveRegion.announce(
+                `You've moved ${item.name} from position ${startIndex + 1
+                } to position ${finishIndex + 1} of ${column.items.length} in the ${column.title} column.`,
+            );
+
+            return;
+        }
+
+        if (outcome.type === OutcomeEnum.CARD_MOVE) {
+            const { finishColumnId, itemIndexInStartColumn, itemIndexInFinishColumn } = outcome;
+
+            const data = boardStateRef.current;
+            const destinationColumn = data.columnMap[finishColumnId];
+            const item = destinationColumn.items[itemIndexInFinishColumn];
+
+            const finishPosition =
+                typeof itemIndexInFinishColumn === 'number'
+                    ? itemIndexInFinishColumn + 1
+                    : destinationColumn.items.length;
+
+            const entry = registry.getCard(item.userId);
+            triggerPostMoveFlash(entry.element);
+
+            if (trigger !== 'keyboard') {
+                return;
+            }
+
+            liveRegion.announce(
+                `You've moved ${item.name} from position ${itemIndexInStartColumn + 1
+                } to position ${finishPosition} in the ${destinationColumn.title} column.`,
+            );
+
+            /**
+             * Because the card has moved column, it will have remounted.
+             * This means we need to manually restore focus to it.
+             */
+            entry.actionMenuTrigger.focus();
+
+            return;
+        }
+
+
+    }, []);
+
 
     return {
         getColumns,
         reorderColumn,
         reorderCardInSameColumn,
-        moveCardToNewColumn
+        moveCardToNewColumn,
+        handleLastOperation
     }
 }
 

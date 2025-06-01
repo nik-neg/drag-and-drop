@@ -41,7 +41,7 @@ export type Outcome =
 		itemIndexInFinishColumn: number;
 	};
 
-type Operation = {
+export type Operation = {
 	trigger: TriggerEnum;
 	outcome: Outcome;
 };
@@ -56,7 +56,7 @@ const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
 export const BoardExample = () => {
 
-	const { getColumns, reorderColumn, reorderCardInSameColumn, moveCardToNewColumn } = useCallbacks();
+	const { getColumns, reorderColumn, reorderCardInSameColumn, moveCardToNewColumn, handleLastOperation } = useCallbacks();
 
 	const [data, setData] = useState<BoardState>(initialData);
 
@@ -66,108 +66,33 @@ export const BoardExample = () => {
 
 	const boardStateRef = useRef<BoardState>(data);
 
-	useEffect(() => {
-		boardStateRef.current = data;
-	}, [data]);
-
 	const [registry] = useState(createRegistry);
 
 	const { lastOperation } = data;
 
+	const [instanceId] = useState(() => Symbol('instance-id'));
+
+	useEffect(() => {
+		boardStateRef.current = data;
+	}, [data]);
 
 	useEffect(() => {
 		return liveRegion.cleanup();
 	}, []);
 
-	const handleLastOperation = useCallback(() => {
-		if (lastOperation === null) {
-			return;
-		}
-		const { outcome, trigger } = lastOperation;
-
-		if (outcome.type === OutcomeEnum.COLUMN_REORDER) {
-			const { startIndex, finishIndex } = outcome;
-
-			const { columnMap, orderedColumnIds } = boardStateRef.current;
-
-			const sourceColumn = columnMap[orderedColumnIds[finishIndex]];
-
-			const entry = registry.getColumn(sourceColumn.columnId);
-
-			triggerPostMoveFlash(entry.element);
-
-			liveRegion.announce(
-				`You've moved ${sourceColumn.title} from position ${startIndex + 1
-				} to position ${finishIndex + 1} of ${orderedColumnIds.length}.`,
-			);
-
-			return;
-		}
-
-		if (outcome.type === OutcomeEnum.CARD_REORDER) {
-			const { columnId, startIndex, finishIndex } = outcome;
-
-			const { columnMap } = boardStateRef.current;
-			const column = columnMap[columnId];
-			const item = column.items[finishIndex];
-
-			const entry = registry.getCard(item.userId);
-			triggerPostMoveFlash(entry.element);
-
-			if (trigger !== 'keyboard') {
-				return;
-			}
-
-			liveRegion.announce(
-				`You've moved ${item.name} from position ${startIndex + 1
-				} to position ${finishIndex + 1} of ${column.items.length} in the ${column.title} column.`,
-			);
-
-			return;
-		}
-
-		if (outcome.type === OutcomeEnum.CARD_MOVE) {
-			const { finishColumnId, itemIndexInStartColumn, itemIndexInFinishColumn } = outcome;
-
-			const data = boardStateRef.current;
-			const destinationColumn = data.columnMap[finishColumnId];
-			const item = destinationColumn.items[itemIndexInFinishColumn];
-
-			const finishPosition =
-				typeof itemIndexInFinishColumn === 'number'
-					? itemIndexInFinishColumn + 1
-					: destinationColumn.items.length;
-
-			const entry = registry.getCard(item.userId);
-			triggerPostMoveFlash(entry.element);
-
-			if (trigger !== 'keyboard') {
-				return;
-			}
-
-			liveRegion.announce(
-				`You've moved ${item.name} from position ${itemIndexInStartColumn + 1
-				} to position ${finishPosition} in the ${destinationColumn.title} column.`,
-			);
-
-			/**
-			 * Because the card has moved column, it will have remounted.
-			 * This means we need to manually restore focus to it.
-			 */
-			entry.actionMenuTrigger.focus();
-
-			return;
-		}
-
-
-	}, [lastOperation, registry]);
 
 	useEffect(() => {
-		handleLastOperation();
+		handleLastOperation({
+			lastOperation,
+			boardStateRef,
+			registry,
+			triggerPostMoveFlash,
+			liveRegion,
+		});
 	}, [handleLastOperation]);
 
 
-	const [instanceId] = useState(() => Symbol('instance-id'));
+
 
 	useEffect(() => {
 		return combine(

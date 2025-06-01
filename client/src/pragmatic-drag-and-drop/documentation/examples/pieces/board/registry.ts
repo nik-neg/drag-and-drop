@@ -11,7 +11,7 @@ export type ColumnEntry = {
 	element: HTMLElement;
 };
 
-type Registry = {
+export type Registry = {
 	cards: Map<string, CardEntry>;
 	columns: Map<string, ColumnEntry>;
 	registerCard: (args: { cardId: string; element: HTMLElement; actionMenuTrigger: HTMLElement }) => void;
