@@ -35,6 +35,8 @@ import { columnHeaderStyles, scrollContainerStyles, stackStyles } from './column
 import { columnStyles } from './column.styles';
 import { Card } from '@/components/card/card';
 import { type State } from './types';
+import { ActionMenu } from '../action-menu/action-menu';
+import { SafariColumnPreview } from './previews/safari-column-preview';
 
 // preventing re-renders with stable state objects
 export const idle: State = { type: 'idle' };
@@ -217,77 +219,3 @@ export const Column = memo(({ column }: { column: ColumnType }) => {
     </ColumnContext.Provider>
   );
 });
-
-const safariPreviewStyles = xcss({
-  width: '250px',
-  backgroundColor: 'elevation.surface.sunken',
-  borderRadius: 'border.radius',
-  padding: 'space.200',
-});
-
-export const SafariColumnPreview = memo(({ column }: { column: ColumnType }) => {
-  return (
-    <Box xcss={[columnHeaderStyles, safariPreviewStyles]}>
-      <Heading size="xxsmall" as="span">
-        {column.title}
-      </Heading>
-    </Box>
-  );
-});
-
-export const ActionMenu = memo(() => {
-  return (
-    <DropdownMenu trigger={DropdownMenuTrigger}>
-      <ActionMenuItems />
-    </DropdownMenu>
-  );
-});
-
-export const ActionMenuItems = memo(() => {
-  const { columnId } = useColumnContext();
-  const { getColumns, reorderColumn } = useBoardContext();
-
-  const columns = getColumns();
-  const startIndex = columns.findIndex(column => column.columnId === columnId);
-
-  const moveLeft = useCallback(() => {
-    reorderColumn({
-      startIndex,
-      finishIndex: startIndex - 1,
-    });
-  }, [reorderColumn, startIndex]);
-
-  const moveRight = useCallback(() => {
-    reorderColumn({
-      startIndex,
-      finishIndex: startIndex + 1,
-    });
-  }, [reorderColumn, startIndex]);
-
-  const isMoveLeftDisabled = startIndex === 0;
-  const isMoveRightDisabled = startIndex === columns.length - 1;
-
-  return (
-    <DropdownItemGroup>
-      <DropdownItem onClick={moveLeft} isDisabled={isMoveLeftDisabled}>
-        Move left
-      </DropdownItem>
-      <DropdownItem onClick={moveRight} isDisabled={isMoveRightDisabled}>
-        Move right
-      </DropdownItem>
-    </DropdownItemGroup>
-  );
-});
-
-function DropdownMenuTrigger({ triggerRef, ...triggerProps }: CustomTriggerProps) {
-  return (
-    <IconButton
-      ref={mergeRefs([triggerRef])}
-      appearance="subtle"
-      label="Actions"
-      spacing="compact"
-      icon={MoreIcon}
-      {...triggerProps}
-    />
-  );
-}
