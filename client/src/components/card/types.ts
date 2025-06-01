@@ -13,3 +13,7 @@ export type CardPrimitiveProps = {
   state: State;
   actionMenuTriggerRef?: Ref<HTMLButtonElement>;
 };
+
+export interface IUseCard {
+  item: Person;
+}

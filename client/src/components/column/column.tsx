@@ -27,6 +27,7 @@ export const Column = memo(({ column }: IColumn) => {
     useColumn({ column });
 
   const stableItems = useRef(column.items);
+
   useEffect(() => {
     stableItems.current = column.items;
   }, [column.items]);
