@@ -28,16 +28,12 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import { Box, Flex, Inline, Stack, xcss } from '@atlaskit/primitives';
 import { token } from '@atlaskit/tokens';
 import { type ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
-import { useBoardContext } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
-import {
-  ColumnContext,
-  type ColumnContextProps,
-  useColumnContext,
-} from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/column-context';
+import { useBoardContext } from '@/provider/context';
+import { ColumnContext, type ColumnContextProps, useColumnContext } from '@/provider/context';
 import { cardListStyles, isDraggingStyles, stateStyles } from './column.styles';
 import { columnHeaderStyles, scrollContainerStyles, stackStyles } from './column.styles';
 import { columnStyles } from './column.styles';
-import { Card } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/card';
+import { Card } from '@/components/card/card';
 import { type State } from './types';
 
 // preventing re-renders with stable state objects

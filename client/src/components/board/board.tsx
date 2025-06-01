@@ -3,12 +3,9 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { triggerPostMoveFlash } from '@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash';
 import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
 import { getBasicData } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
-import {
-  BoardContext,
-  type BoardContextValue,
-} from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
-import { Column } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/column';
-import { createRegistry } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
+import { BoardContext, type BoardContextValue } from '@/provider/context';
+import { Column } from '@/components/column/column';
+import { createRegistry } from '@/provider/registry';
 import { TriggerEnum } from '@/enums/trigger.enum';
 import { useBoard } from '@/hooks/useBoard';
 import { SBoardContainer } from './board.styles';

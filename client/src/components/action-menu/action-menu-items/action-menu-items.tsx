@@ -2,8 +2,8 @@ import { DropdownItem } from '@atlaskit/dropdown-menu';
 
 import { useCallback } from 'react';
 
-import { useBoardContext } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/board-context';
-import { useColumnContext } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/column-context';
+import { useBoardContext } from '@/provider/context';
+import { useColumnContext } from '@/provider/context';
 import { memo } from 'react';
 import { DropdownItemGroup } from '@atlaskit/dropdown-menu';
 

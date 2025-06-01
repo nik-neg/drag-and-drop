@@ -1,7 +1,7 @@
 import { reorder } from '@atlaskit/pragmatic-drag-and-drop/reorder';
 import { OutcomeEnum } from '@/enums/outcome.enum';
 import { TriggerEnum } from '@/enums/trigger.enum';
-import type { BoardState, Operation, Outcome } from '@/board-example';
+import type { BoardState, Operation, Outcome } from '@/components/board/types';
 import type {
   ColumnMap,
   Person,
@@ -9,7 +9,7 @@ import type {
 import type { ColumnType } from '@/pragmatic-drag-and-drop/documentation/examples/data/people';
 import type { RefObject } from 'react';
 import { useCallback } from 'react';
-import type { Registry } from '@/pragmatic-drag-and-drop/documentation/examples/pieces/board/registry';
+import type { Registry } from '@/provider/registry';
 
 interface IGetColumnsProps {
   boardState: RefObject<BoardState>;

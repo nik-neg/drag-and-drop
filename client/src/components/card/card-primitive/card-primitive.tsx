@@ -3,14 +3,14 @@ import { token } from '@atlaskit/tokens';
 import { Box, Stack } from '@atlaskit/primitives';
 
 import { baseStyles, buttonColumnStyles, noMarginStyles } from '../card.styles';
-import { IconButton } from '@atlaskit/button/dist/types/entry-points/new';
+import { IconButton } from '@atlaskit/button/new';
 import { Grid } from '@atlaskit/primitives';
 import { forwardRef } from 'react';
 import { noPointerEventsStyles, stateStyles } from '../card.styles';
-import DropIndicator from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/dist/types/box';
+import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
 import { LazyDropdownItems } from './items';
 import DropdownMenu from '@atlaskit/dropdown-menu';
-import mergeRefs from '@atlaskit/ds-lib/dist/types/utils/merge-refs';
+import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import type { CardPrimitiveProps } from '../types';
 import Avatar from '@atlaskit/avatar';
 import MoreIcon from '@atlaskit/icon/utility/migration/show-more-horizontal--editor-more';
