@@ -1,5 +1,6 @@
 import type { ColumnType } from '@/data';
 import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+import { StateEnum } from '@/enums/state.enum';
 
 /**
  * Note: not making `'is-dragging'` a `State` as it is
@@ -8,11 +9,11 @@ import { type Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge
  * Our board allows you to be over the column that is currently dragging
  */
 export type State =
-  | { type: 'idle' }
-  | { type: 'is-card-over' }
-  | { type: 'is-column-over'; closestEdge: Edge | null }
-  | { type: 'generate-safari-column-preview'; container: HTMLElement }
-  | { type: 'generate-column-preview' };
+  | { type: StateEnum.IDLE }
+  | { type: StateEnum.IS_CARD_OVER }
+  | { type: StateEnum.IS_COLUMN_OVER; closestEdge: Edge | null }
+  | { type: StateEnum.GENERATE_SAFARI_COLUMN_PREVIEW; container: HTMLElement }
+  | { type: StateEnum.GENERATE_COLUMN_PREVIEW };
 
 export interface IColumn {
   column: ColumnType;

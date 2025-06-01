@@ -8,6 +8,7 @@ import { type Person } from '@/data';
 
 import { CardPrimitive } from './card-primitive/card-primitive';
 import { useCard } from './useCard';
+import { StateEnum } from '@/enums/state.enum';
 
 export const Card = memo(({ item }: { item: Person }) => {
   const { ref, closestEdge, state, actionMenuTriggerRef } = useCard({ item });
@@ -21,7 +22,7 @@ export const Card = memo(({ item }: { item: Person }) => {
         closestEdge={closestEdge}
         actionMenuTriggerRef={actionMenuTriggerRef}
       />
-      {state.type === 'preview' &&
+      {state.type === StateEnum.PREVIEW &&
         ReactDOM.createPortal(
           <Box
             style={{
