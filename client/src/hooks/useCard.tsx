@@ -6,7 +6,7 @@ import {
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
-import type { IUseCard, State } from './types';
+import type { IUseCard, State } from '../components/card/types';
 import { useBoardContext } from '@/provider/context';
 import invariant from 'tiny-invariant';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';

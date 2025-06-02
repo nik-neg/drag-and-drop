@@ -7,7 +7,7 @@ import { Box } from '@atlaskit/primitives';
 import { type Person } from '@/data';
 
 import { CardPrimitive } from './card-primitive/card-primitive';
-import { useCard } from './useCard';
+import { useCard } from '../../hooks/useCard';
 import { StateEnum } from '@/enums/state.enum';
 
 export const Card = memo(({ item }: { item: Person }) => {

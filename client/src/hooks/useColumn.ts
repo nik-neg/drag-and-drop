@@ -3,8 +3,8 @@ import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/clo
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
-import type { IColumn, State } from './types';
-import { idle, isCardOver } from './column';
+import type { IColumn, State } from '../components/column/types';
+import { idle, isCardOver } from '../components/column/column';
 import { useBoardContext } from '@/provider/context';
 import invariant from 'tiny-invariant';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
