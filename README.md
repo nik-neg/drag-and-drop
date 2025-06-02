@@ -61,6 +61,10 @@ src/
    - Modular component structure
    - Clear separation of concerns
 
+3. **Using Vite**
+
+   - modern bundling for better development experience
+
 ## 🚀 Getting Started
 
 1. Clone the repository
