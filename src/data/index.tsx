@@ -2,6 +2,7 @@
  * These imports are written out explicitly because they
  * need to be statically analyzable to be uploaded to CodeSandbox correctly.
  */
+import { RoleEnum } from '@/enums/role.enum';
 import Alexander from './images/processed/Alexander';
 import Aliza from './images/processed/Aliza';
 import Alvin from './images/processed/Alvin';
@@ -81,19 +82,7 @@ const avatarMap: Record<string, string> = {
 
 const names: string[] = Object.keys(avatarMap);
 
-const roles: string[] = [
-  'Engineer',
-  'Senior Engineer',
-  'Principal Engineer',
-  'Engineering Manager',
-  'Designer',
-  'Senior Designer',
-  'Lead Designer',
-  'Design Manager',
-  'Content Designer',
-  'Product Manager',
-  'Program Manager',
-];
+const roles: string[] = Object.values(RoleEnum);
 
 let sharedLookupIndex: number = 0;
 

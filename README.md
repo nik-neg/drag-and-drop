@@ -1,54 +1,83 @@
-# React + TypeScript + Vite
+# Enhanced Drag and Drop Board Example
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, type-safe implementation of a drag and drop board using Atlassian's Pragmatic Drag and Drop library. This project enhances the official example with improved architecture, better type safety, and a more maintainable folder structure.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Type-Safe Implementation**: Enhanced with TypeScript enums and strict typing
+- **Modern React Patterns**:
+  - Custom hooks for drag and drop logic
+  - Context providers for state management
+  - Memoized components for better performance
+- **Enhanced Architecture**:
+  - Clean folder structure
+  - Separated concerns
+  - Reusable components
+- **Advanced Drag and Drop Features**:
+  - Column reordering
+  - Card reordering within columns
+  - Cross-column card movement
+  - Custom drag previews
+  - Safari-specific optimizations
+  - Auto-scrolling support
+  - Drop indicators
+  - Action menus for cards and columns
 
-## Expanding the ESLint configuration
+## 📁 Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+```
+src/
+├── assets/         # Static assets
+├── components/     # React components
+│   ├── action-menu/    # Column and card action menus
+│   ├── board/         # Main board component
+│   ├── card/          # Card components
+│   └── column/        # Column components
+├── data/          # Data types and initial state
+├── enums/         # TypeScript enums
+├── hooks/         # Custom React hooks
+├── provider/      # Context providers
+└── main.tsx       # Application entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Built With
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [@atlaskit/pragmatic-drag-and-drop](https://bitbucket.org/atlassian/pragmatic-drag-and-drop)
+- [Vite](https://vitejs.dev/)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+## 🎯 Key Improvements
+
+1. **Enhanced Type Safety**
+
+   - Custom enums for state management
+   - Strict TypeScript configurations
+   - Improved type definitions
+
+2. **Improved Architecture**
+
+   - Separated drag and drop logic into custom hooks
+   - Modular component structure
+   - Clear separation of concerns
+
+## 🚀 Getting Started
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Based on the [Atlassian Pragmatic Drag and Drop](https://codesandbox.io/p/sandbox/mfrksf?file=%2Fexample.tsx) example
+- Enhanced with modern React patterns and TypeScript
