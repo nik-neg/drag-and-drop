@@ -60,14 +60,14 @@ export const useColumn = ({ column }: IColumn) => {
             navigator.userAgent.includes('AppleWebKit') && !navigator.userAgent.includes('Chrome');
 
           if (!isSafari) {
-            setState({ type: 'generate-column-preview' });
+            setState({ type: StateEnum.GENERATE_COLUMN_PREVIEW });
             return;
           }
           setCustomNativeDragPreview({
             getOffset: centerUnderPointer,
             render: ({ container }) => {
               setState({
-                type: 'generate-safari-column-preview',
+                type: StateEnum.GENERATE_SAFARI_COLUMN_PREVIEW,
                 container,
               });
               return () => setState(idle);
