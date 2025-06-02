@@ -55,23 +55,11 @@ src/
    - Strict TypeScript configurations
    - Improved type definitions
 
-2. **Better State Management**
-
-   - Context providers for board and column state
-   - Optimized re-renders with memoization
-   - Clean state updates
-
-3. **Improved Architecture**
+2. **Improved Architecture**
 
    - Separated drag and drop logic into custom hooks
    - Modular component structure
    - Clear separation of concerns
-
-4. **Enhanced User Experience**
-   - Smooth animations
-   - Visual feedback during drag operations
-   - Intuitive action menus
-   - Cross-browser compatibility
 
 ## 🚀 Getting Started
 
@@ -91,5 +79,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- Based on the [Atlassian Pragmatic Drag and Drop](https://bitbucket.org/atlassian/pragmatic-drag-and-drop) example
+- Based on the [Atlassian Pragmatic Drag and Drop](https://codesandbox.io/p/sandbox/mfrksf?file=%2Fexample.tsx) example
 - Enhanced with modern React patterns and TypeScript
