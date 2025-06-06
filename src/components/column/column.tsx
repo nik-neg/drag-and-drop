@@ -15,7 +15,7 @@ import { Card } from '@/components/card/card';
 import { type IColumn, type State } from './types';
 import { ActionMenu } from '../action-menu/action-menu';
 import { SafariColumnPreview } from './previews/safari-column-preview';
-import { useColumn } from '../../hooks/useColumn';
+import { useColumn } from '@/hooks';
 import Heading from '@atlaskit/heading';
 import { StateEnum } from '@/enums/state.enum';
 

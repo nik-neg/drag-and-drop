@@ -7,9 +7,9 @@ import { BoardContext, type BoardContextValue } from '@/provider/context';
 import { Column } from '@/components/column/column';
 import { createRegistry } from '@/provider/registry';
 import { TriggerEnum } from '@/enums/trigger.enum';
-import { useBoard } from '@/hooks/useBoard';
 import { SBoardContainer } from './board.styles';
 import { type BoardState } from './types';
+import { useBoard } from '@/hooks';
 
 const initialData: BoardState = { ...getBasicData(), lastOperation: null };
 
