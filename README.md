@@ -1,6 +1,6 @@
 # Enhanced Drag and Drop Board Example
 
-A modern, type-safe implementation of a drag and drop board using Atlassian's Pragmatic Drag and Drop library. This project enhances the official example with improved architecture, better type safety, and a more maintainable folder structure.
+A modern, type-safe implementation of a drag and drop board using Atlassian's Pragmatic Drag and Drop library. This project enhances the [official example](https://atlassian.design/components/pragmatic-drag-and-drop/about) with improved architecture, better type safety, and a more maintainable folder structure.
 
 ## 🚀 Features
 
